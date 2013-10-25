@@ -276,7 +276,7 @@ public class NeuralNetNetworkRT extends AbstractRT<NeuralNetNetworkVO> implement
 	 */
 	public void updateInputs(NeuralNetPointRT pointRt) {
 		synchronized(networkLock){
-
+			
 			this.inputVector[pointRt.getVectorIndex()] = pointRt.getNormalizedCurrentValue();
 			this.network.setInput(inputVector);
 			

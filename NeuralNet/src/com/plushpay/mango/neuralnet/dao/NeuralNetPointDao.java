@@ -148,7 +148,7 @@ public class NeuralNetPointDao extends AbstractDao<NeuralNetPointVO>{
 	 * @param id
 	 */
 	public List<NeuralNetPointVO> getNetworkPoints(int inputType, int networkId) {
-		return query(SELECT_ALL + " WHERE pointType = ? AND networkId = ?",new Object[]{inputType,networkId}, new NeuralNetPointRowMapper());
+		return query(SELECT_ALL + " WHERE pointType = ? AND networkId = ? ORDER BY delay",new Object[]{inputType,networkId}, new NeuralNetPointRowMapper());
 	}
 
 }
