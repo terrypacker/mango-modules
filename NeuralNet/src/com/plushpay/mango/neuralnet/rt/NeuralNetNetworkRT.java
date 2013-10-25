@@ -29,6 +29,7 @@ import com.plushpay.mango.neuralnet.vo.NeuralNetNetworkVO;
 import com.plushpay.mango.neuralnet.vo.NeuralNetPointVO;
 import com.serotonin.m2m2.Common;
 import com.serotonin.m2m2.db.dao.DataPointDao;
+import com.serotonin.m2m2.db.dao.PointValueDao;
 import com.serotonin.m2m2.i18n.TranslatableMessage;
 import com.serotonin.m2m2.rt.AbstractRT;
 import com.serotonin.m2m2.rt.dataImage.DataPointRT;
@@ -250,11 +251,22 @@ public class NeuralNetNetworkRT extends AbstractRT<NeuralNetNetworkVO> implement
 	
 
 	/**
-	 *  Add the listeners for the points
+	 *  Add the listeners for the points and set the point to have the necessary window full 
+	 *  of data so we can hit the ground running. 
+	 *  
 	 * @throws DataPointException 
 	 */
 	private void addDataPointListeners() throws DataPointException {
+		PointValueDao dao = new PointValueDao();
 		for(NeuralNetInputPointListener listener : this.listeners){
+			//TODO Could speed this up by only grabbing a list for a given point once
+			// for systems with a huge delay you will be grabbing one list per point
+			List<PointValueTime> values = dao.getLatestPointValues(listener.getRt().getVo().getDataPointId(), listener.getRt().getVo().getDelay());
+			for(PointValueTime value : values){
+				listener.getRt().updatePoint(value);
+			}
+			//Also set the input vector too
+			this.inputVector[listener.getRt().getVectorIndex()] = listener.getRt().getCurrentValue().getDoubleValue();
 			Common.runtimeManager.addDataPointListener(listener.getRt().getVo().getDataPointId(), listener);
 		}
 	}
