@@ -1,0 +1,105 @@
+<h1>Transfer Functions</h1>
+Ensure the propert transfer function is selected to ensure convergence to a solution.
+<br>
+When setting up a network, in addition to selecting the Transfer Function there may be tunable settings for it.  See the list below for available options.
+<br>
+<b>Gaussian</b>
+ f(x) =(e^*-(x^2) / (2 * sigma^2))
+
+The graph of a <a href="http://en.wikipedia.org/wiki/Gaussian_function">gaussian</a> is a characteristic symmetric "bell curve" shape that 
+quickly falls off towards zero. 
+<br>
+The parameter a is the height of the curve's peak, b is the position of the center of the peak, and 
+c (the standard deviation) controls the width of the "bell".  
+<br>
+Gaussian functions are widely used in statistics where they describe the 
+normal distributions, in signal processing where they serve to define Gaussian filters, in image processing where two-dimensional Gaussians 
+are used for Gaussian blurs, and in mathematics where they are used to solve heat equations and diffusion equations and to define the Weierstrass transform.
+<br>
+<ul>
+<li>transferFunction.sigma - width of the bell?</li>
+</ul>
+
+<br>
+<b>Linear</b>
+f(x) = slope*x
+<br>
+In calculus, analytic geometry and related areas, a linear function is a polynomial of degree one or less, including the zero polynomial (the latter not being considered to have degree zero).
+<br>
+<b>Log</b>
+f(x) = log(x)
+<ul>
+<li>transferFunction.slope - Slope of the line</li>
+</ul>
+<br>
+<b>Ramp</b>
+The ramp function generates a straight line with the given slope for all inputs within the acceptable range.  Inputs outside of the range get clamped to the high or low limit.
+<br>
+<ul>
+<li>transferFunction.slope - Slope of the line</li>
+<li>transferFunction.xHigh - the high input limit</li>
+<li>transferFunction.xLow - the low input limit</li>
+<li>transferFunction.yHigh - the high output limit</li>
+<li>transferFunction.yLow - the low output limit</li>
+</ul>
+
+<br>
+<b>Sgn</b>
+The Sgn function returns a 1 for anything > 0 and a -1 for anything < 0
+<br>
+<b>Sigmoid</b>
+f(x) = 1/(1+ e^(-slope*x))
+<br>
+A <a href="http://en.wikipedia.org/wiki/Sigmoid_function">sigmoid</a> function is a mathematical function having an "S" shape (sigmoid curve).
+ It is used in modeling systems that saturate at large values of the argument, or another example is the ogee curve as used in the 
+spillway of some dams. A wide variety of sigmoid functions have been used as the activation function of artificial 
+neurons, including the logistic and hyperbolic tangent functions. Sigmoid curves are also common in statistics as 
+cumulative distribution functions, such as the integrals of the logistic distribution, the normal distribution, 
+and Student's t probability density functions.
+<br>
+
+<ul>
+<li>transferFunction.slope</li>
+</ul>
+<br>
+<b>Sin</b>
+f(x) = sine(x)
+The Sin function returns the Sine value of the input.
+<br>
+<b>Step</b>
+The step function returns the high output limit for x > 0 and the low output limit for x <= 0
+<br>
+<ul>
+<li>transferFunction.yHigh - the high output limit</li>
+<li>transferFunction.yLow - the low output limit</li>
+</ul>
+<br>
+<b>Tanh</b>
+The Tanh function returns 1 for any input > 100 and -1 for any input > -100.
+For values within this range the following formula is used:
+f(x) = (e^(slope*x)-1)/(e^(slope*x)+1)
+<br>
+Settings:
+<ul>
+<li>transferFunction.slope</li>
+</ul>
+<br>
+<b>Trapezoid</b>
+The Trapezoid function:
+<br>
+For any x that is both >= Left and Right high: f(x) = 1 
+<br>
+For any x that is > leftLow and < leftHigh: f(x) = (x - leftLow)/(leftHigh - leftLow)
+<br>
+For any x that is > rightHigh and < right Low: f(x) = (rightLow -x)/(rightLow - rightHigh)
+<br>
+For any other x : f(x) = 0
+<br>
+Settings:
+<ul>
+<li>transferFunction.leftLow</li>
+<li>transferFunction.leftHigh</li>
+<li>transferFunction.rightLow</li>
+<li>transferFunction.rightHigh</li>
+</ul>
+
