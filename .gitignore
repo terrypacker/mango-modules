@@ -1,6 +1,6 @@
 *.class
 
 # Package Files #
-*.jar
+# NOT Until we setup Maven on Core: *.jar
 *.war
 *.ear
