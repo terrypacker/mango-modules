@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Copyright (C) 2013 PlushPay. All rights reserved.
+    @author Terry Packer
+-->
+
+<doxManifest>
+
+  <item id="neural-network-help" key="neuralnet.dox.network.help" filename="network.htm">
+    <relation id="neural-hiddenLayer-help"/>
+    <relation id="neural-transferFunction-help"/>
+    <relation id="neural-point-help"/>
+  </item> 
+
+  <item id="neural-hiddenLayer-help" key="neuralnet.dox.hiddenLayer.help" filename="hiddenLayer.htm">
+    <relation id="neural-network-help"/>
+    <relation id="neural-point-help"/>
+  </item> 
+
+  <item id="neural-transferFunction-help" key="neuralnet.dox.transferFunction.help" filename="transferFunction.htm">
+    <relation id="neural-network-help"/>
+  </item> 
+
+  <item id="neural-point-help" key="neuralnet.dox.point.help" filename="point.htm">
+    <relation id="neural-network-help"/>
+    <relation id="neural-hiddenLayer-help"/>
+  </item> 
+
+</doxManifest>
