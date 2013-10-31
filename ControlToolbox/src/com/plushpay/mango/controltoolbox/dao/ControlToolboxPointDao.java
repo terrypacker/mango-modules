@@ -31,7 +31,7 @@ public class ControlToolboxPointDao extends AbstractDao<ControlToolboxPointVO>{
     
     private ControlToolboxPointDao() {
         super(ControlToolboxPointAuditEventTypeDefinition.TYPE_NAME);
-        LOG = LogFactory.getLog(ControlToolboxControllerDao.class);
+        LOG = LogFactory.getLog(ControlToolboxPointDao.class);
     }
 
 
@@ -63,8 +63,7 @@ public class ControlToolboxPointDao extends AbstractDao<ControlToolboxPointVO>{
 				vo.getPointType(),
 				vo.getDelay(),
 				vo.getDataPointId(),
-				vo.getTrainingDataPointId(),
-				vo.getNetworkId()
+				vo.getControllerId()
 			};
 	}
 
@@ -97,8 +96,7 @@ public class ControlToolboxPointDao extends AbstractDao<ControlToolboxPointVO>{
                 "pointType",
                 "delay",
                 "dataPointId",
-                "trainingDataPointId",
-                "networkId"
+                "controllerId"
                 );
     }
 
@@ -121,10 +119,10 @@ public class ControlToolboxPointDao extends AbstractDao<ControlToolboxPointVO>{
 	 */
 	@Override
 	public RowMapper<ControlToolboxPointVO> getRowMapper() {
-		return new NeuralNetPointRowMapper();
+		return new ControlNetworkPointRowMapper();
 	}
 	
-    class NeuralNetPointRowMapper implements RowMapper<ControlToolboxPointVO> {
+    class ControlNetworkPointRowMapper implements RowMapper<ControlToolboxPointVO> {
         @Override
         public ControlToolboxPointVO mapRow(ResultSet rs, int rowNum) throws SQLException {
             int i = 0;
@@ -136,8 +134,7 @@ public class ControlToolboxPointDao extends AbstractDao<ControlToolboxPointVO>{
             pt.setPointType(rs.getInt(++i));
             pt.setDelay(rs.getInt(++i));
             pt.setDataPointId(rs.getInt(++i));
-            pt.setTrainingDataPointId(rs.getInt(++i));
-            pt.setNetworkId(rs.getInt(++i));
+            pt.setControllerId(rs.getInt(++i));
             return pt;
         }
     }
@@ -147,8 +144,8 @@ public class ControlToolboxPointDao extends AbstractDao<ControlToolboxPointVO>{
 	 * @param inputType
 	 * @param id
 	 */
-	public List<ControlToolboxPointVO> getNetworkPoints(int inputType, int networkId) {
-		return query(SELECT_ALL + " WHERE pointType = ? AND networkId = ? ORDER BY delay",new Object[]{inputType,networkId}, new NeuralNetPointRowMapper());
+	public List<ControlToolboxPointVO> getControllerPoints(int inputType, int controllerId) {
+		return query(SELECT_ALL + " WHERE pointType = ? AND controllerId = ? ORDER BY delay",new Object[]{inputType,controllerId}, new ControlNetworkPointRowMapper());
 	}
 
 }

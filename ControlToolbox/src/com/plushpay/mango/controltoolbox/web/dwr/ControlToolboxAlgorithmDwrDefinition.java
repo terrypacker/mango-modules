@@ -18,7 +18,7 @@ public class ControlToolboxAlgorithmDwrDefinition extends DwrDefinition{
 	 */
 	@Override
 	public Class<? extends ModuleDwr> getDwrClass() {
-		return ControlToolboxControllerDwr.class;
+		return ControlToolboxAlgorithmDwr.class;
 	}
 	
 

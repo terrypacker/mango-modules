@@ -4,8 +4,11 @@
  */
 package com.plushpay.mango.controltoolbox.web.dwr;
 
+import com.plushpay.mango.controltoolbox.vo.AlgorithmProperties;
+import com.plushpay.mango.controltoolbox.vo.ControlToolboxAlgorithmVO;
 import com.plushpay.mango.controltoolbox.vo.ControlToolboxControllerVO;
 import com.plushpay.mango.controltoolbox.vo.ControlToolboxPointVO;
+import com.plushpay.mango.controltoolbox.vo.PidAlgorithmProperties;
 import com.serotonin.m2m2.module.DwrConversionDefinition;
 
 /**
@@ -21,7 +24,9 @@ public class ControlToolboxDwrConversionDefinition extends DwrConversionDefiniti
 	public void addConversions() {
 		this.addConversion(ControlToolboxControllerVO.class, "bean");
 		this.addConversion(ControlToolboxPointVO.class,"bean");
-
+		this.addConversion(ControlToolboxAlgorithmVO.class,"bean");
+		this.addConversion(AlgorithmProperties.class,"bean");
+		this.addConversion(PidAlgorithmProperties.class,"bean");
 		
 	}
 

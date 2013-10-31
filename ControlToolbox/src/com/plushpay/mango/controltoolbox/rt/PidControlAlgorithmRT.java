@@ -13,7 +13,7 @@ import org.apache.commons.math3.linear.RealVector;
  * @author Terry Packer
  *
  */
-public class PidControlAlgorithmRT implements ControlToolboxControlAlgorithmRT{
+public class PidControlAlgorithmRT extends ControlToolboxControlAlgorithmRT{
 
 	//Potential members to move to Algorithm superclass
 	private double[] inputVector;
@@ -37,7 +37,7 @@ public class PidControlAlgorithmRT implements ControlToolboxControlAlgorithmRT{
 	/**
 	 * Simple PID Controller
 	 * 
-	 * 
+	 * TODO Add limits
 	 * 
 	 * @param numInputs
 	 * @param numOutputs
@@ -46,11 +46,12 @@ public class PidControlAlgorithmRT implements ControlToolboxControlAlgorithmRT{
 	 * @param d
 	 * @param samplePeriod
 	 */
-	public PidControlAlgorithmRT(int numInputs, int numOutputs, double p, double i, double d, double samplePeriod){
+	public PidControlAlgorithmRT(int numInputs, int numSetpoints, int numOutputs, double p, double i, double d, double samplePeriod){
 		
 		
 		this.inputVector = new double[numInputs];
 		this.outputVector = new double[numOutputs];
+		this.setpointVector = new double[numSetpoints];
 		
 		double[] previousErrorVectorValues = new double[numInputs];
 		Arrays.fill(previousErrorVectorValues, 0D);
@@ -73,6 +74,7 @@ public class PidControlAlgorithmRT implements ControlToolboxControlAlgorithmRT{
 		
 	}
 	
+
 	/* (non-Javadoc)
 	 * @see com.plushpay.mango.controltoolbox.controller.ControlToolboxControlAlgorithmRT#setSetpoint(double[])
 	 */

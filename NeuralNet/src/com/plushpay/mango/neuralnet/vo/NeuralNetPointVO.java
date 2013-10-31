@@ -121,7 +121,7 @@ public class NeuralNetPointVO extends AbstractActionVO<NeuralNetPointVO>{
         if (net == null) {
             throw new TranslatableJsonException("neuralnet.validate.networkMissing", "network", xid);
         }
-        
+        this.networkId = net.getId();
         
     }
     

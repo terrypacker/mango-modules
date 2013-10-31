@@ -14,10 +14,8 @@ import java.util.Map;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.jdbc.core.RowMapper;
 
-import com.plushpay.mango.neuralnet.NeuralNetNetworkAuditEventTypeDefinition;
 import com.plushpay.mango.neuralnet.NeuralNetPointAuditEventTypeDefinition;
 import com.plushpay.mango.neuralnet.db.SchemaDefinition;
-import com.plushpay.mango.neuralnet.vo.NeuralNetNetworkVO;
 import com.plushpay.mango.neuralnet.vo.NeuralNetPointVO;
 import com.serotonin.m2m2.db.dao.AbstractDao;
 
@@ -31,7 +29,7 @@ public class NeuralNetPointDao extends AbstractDao<NeuralNetPointVO>{
     
     private NeuralNetPointDao() {
         super(NeuralNetPointAuditEventTypeDefinition.TYPE_NAME);
-        LOG = LogFactory.getLog(NeuralNetNetworkDao.class);
+        LOG = LogFactory.getLog(NeuralNetPointDao.class);
     }
 
 

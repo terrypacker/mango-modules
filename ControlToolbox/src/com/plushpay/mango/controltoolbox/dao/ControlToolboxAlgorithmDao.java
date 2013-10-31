@@ -6,6 +6,7 @@ package com.plushpay.mango.controltoolbox.dao;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Types;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -15,12 +16,11 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.jdbc.core.RowMapper;
 
 import com.plushpay.mango.controltoolbox.ControlToolboxAlgorithmAuditEventTypeDefinition;
-import com.plushpay.mango.controltoolbox.ControlToolboxControllerAuditEventTypeDefinition;
-import com.plushpay.mango.controltoolbox.dao.ControlToolboxControllerDao.NeuralNetNetworkRowMapper;
 import com.plushpay.mango.controltoolbox.db.SchemaDefinition;
+import com.plushpay.mango.controltoolbox.vo.AlgorithmProperties;
 import com.plushpay.mango.controltoolbox.vo.ControlToolboxAlgorithmVO;
-import com.plushpay.mango.controltoolbox.vo.ControlToolboxControllerVO;
 import com.serotonin.m2m2.db.dao.AbstractDao;
+import com.serotonin.util.SerializationHelper;
 
 /**
  * @author Terry Packer
@@ -43,11 +43,27 @@ public class ControlToolboxAlgorithmDao extends AbstractDao<ControlToolboxAlgori
                 "id",
                 "xid",
                 "name",
-                "type",
-                "settings"
+                "algorithmType",
+                "data"
                 );
     }
 
+	/**
+	 * This method is required because we are using a lob type
+	 * TODO make this a map to sync with voToObjectArray
+	 * 
+	 * 
+	 */
+	@Override
+	protected List<Integer> getPropertyTypes(){
+		return Arrays.asList(
+					Types.VARCHAR, //xid
+					Types.VARCHAR, //name
+					Types.INTEGER, //algo type
+					Types.BLOB //data
+				);
+	}
+    
 	/* (non-Javadoc)
 	 * @see com.serotonin.m2m2.db.dao.AbstractDao#getTableName()
 	 */
@@ -72,7 +88,8 @@ public class ControlToolboxAlgorithmDao extends AbstractDao<ControlToolboxAlgori
 		return new Object[]{
 			vo.getXid(),
 			vo.getName(),
-			vo.getProperties()
+			vo.getAlgorithmType(),
+			SerializationHelper.writeObject(vo.getProperties())
 		};
 	}
 
@@ -80,8 +97,8 @@ public class ControlToolboxAlgorithmDao extends AbstractDao<ControlToolboxAlgori
 	 * @see com.serotonin.m2m2.db.dao.AbstractDao#getNewVo()
 	 */
 	@Override
-	public ControlToolboxControllerVO getNewVo() {
-		ControlToolboxControllerVO vo =  new ControlToolboxControllerVO();
+	public ControlToolboxAlgorithmVO getNewVo() {
+		ControlToolboxAlgorithmVO vo =  new ControlToolboxAlgorithmVO();
 		vo.setXid(this.generateUniqueXid());
 		return vo;
 	}
@@ -98,26 +115,21 @@ public class ControlToolboxAlgorithmDao extends AbstractDao<ControlToolboxAlgori
 	 * @see com.serotonin.m2m2.db.dao.AbstractBasicDao#getRowMapper()
 	 */
 	@Override
-	public RowMapper<ControlToolboxControllerVO> getRowMapper() {
-		return new NeuralNetNetworkRowMapper();
+	public RowMapper<ControlToolboxAlgorithmVO> getRowMapper() {
+		return new ControlToolboxAlgorithmRowMapper();
 	}
 	
-    class NeuralNetNetworkRowMapper implements RowMapper<ControlToolboxControllerVO> {
+    class ControlToolboxAlgorithmRowMapper implements RowMapper<ControlToolboxAlgorithmVO> {
         @Override
-        public ControlToolboxControllerVO mapRow(ResultSet rs, int rowNum) throws SQLException {
+        public ControlToolboxAlgorithmVO mapRow(ResultSet rs, int rowNum) throws SQLException {
             int i = 0;
-            ControlToolboxControllerVO net = new ControlToolboxControllerVO();
+            ControlToolboxAlgorithmVO net = new ControlToolboxAlgorithmVO();
             net.setId(rs.getInt(++i));
             net.setXid(rs.getString(++i));
             net.setName(rs.getString(++i));
-            net.setEnabled(charToBool(rs.getString(++i)));
-            net.setTransferFunctionType(rs.getInt(++i));
-            net.setLearningRate(rs.getDouble(++i));
-            net.setMaxError(rs.getDouble(++i));
-            net.setLearningMaxIterations(rs.getInt(++i));
-            net.setTrainingPeriodStart(rs.getLong(++i));
-            net.setTrainingPeriodEnd(rs.getLong(++i));
-            net.setPropertiesString(rs.getString(++i));
+            net.setAlgorithmType(rs.getInt(++i));
+            AlgorithmProperties props = (AlgorithmProperties) SerializationHelper.readObjectInContext(rs.getBinaryStream(++i));
+            net.setProperties(props);
             return net;
         }
     }

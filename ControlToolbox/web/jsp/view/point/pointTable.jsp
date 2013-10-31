@@ -7,12 +7,12 @@
 <!-- Table Div -->
 <div id="pointDiv" class="borderDivPadded marB" >
   <tag:img png="icon_ds" title="dsList.dataSources"/>
-  <span class="smallTitle"><fmt:message key="neuralnet.edit.configuredPoints"/></span>
-  <tag:help id="neural-point-help"/>
+  <span class="smallTitle"><fmt:message key="controltoolbox.edit.configuredPoints"/></span>
+  <tag:help id="control-point-help"/>
 
   <div id="pointTable"></div>
 
-  <span class="smallTitle"><fmt:message key="neuralnet.edit.addPoint"/></span>
+  <span class="smallTitle"><fmt:message key="controltoolbox.edit.addPoint"/></span>
   <tag:img png="add" title="common.add" id="addPoint" onclick="points.open(-1)"/>
 
 
@@ -20,5 +20,3 @@
 
 <!-- Include the Edit Div -->
 <jsp:include page="pointEdit.jsp"/>
-<!-- Include the Point Utility -->
-<jsp:include page="pointUtility.jsp"/>

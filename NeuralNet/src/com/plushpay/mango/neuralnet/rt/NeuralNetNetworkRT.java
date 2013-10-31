@@ -261,12 +261,13 @@ public class NeuralNetNetworkRT extends AbstractRT<NeuralNetNetworkVO> implement
 		for(NeuralNetInputPointListener listener : this.listeners){
 			//TODO Could speed this up by only grabbing a list for a given point once
 			// for systems with a huge delay you will be grabbing one list per point
-			List<PointValueTime> values = dao.getLatestPointValues(listener.getRt().getVo().getDataPointId(), listener.getRt().getVo().getDelay());
+			List<PointValueTime> values = dao.getLatestPointValues(listener.getRt().getVo().getDataPointId(), listener.getRt().getVo().getDelay()+1);
 			for(PointValueTime value : values){
 				listener.getRt().updatePoint(value);
 			}
 			//Also set the input vector too
 			this.inputVector[listener.getRt().getVectorIndex()] = listener.getRt().getCurrentValue().getDoubleValue();
+			this.network.setInput(inputVector);
 			Common.runtimeManager.addDataPointListener(listener.getRt().getVo().getDataPointId(), listener);
 		}
 	}

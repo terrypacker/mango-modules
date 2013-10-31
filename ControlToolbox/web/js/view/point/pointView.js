@@ -8,7 +8,7 @@ require(["deltamation/StoreView", "dijit/form/CheckBox","dojo/store/Memory",
          "dijit/form/FilteringSelect", "dijit/form/ValidationTextBox", "dojo/domReady!"],
 function(StoreView, CheckBox, Memory, FilteringSelect, ValidationTextBox) {
     
-    NeuralNetPointDwr.getPointTypes(function(response){
+    ControlToolboxPointDwr.getPointTypes(function(response){
     	points.pointType = new FilteringSelect({
             store: new Memory({data: response.data.pointTypes})
         }, "pointTypePicker");
@@ -49,21 +49,17 @@ points = new StoreView({
         else
         	this.dataPoint.reset();
 
-        if(vo.trainingDataPointId > 0)
-        	this.trainingDataPoint.set('value',vo.trainingDataPointId);
-        else
-        	this.trainingDataPoint.reset();
 
-        if(vo.networkId > 0)
-        	this.network.set('value',vo.networkId);
+        if(vo.controllerId > 0)
+        	this.controller.set('value',vo.controllerId);
         else
-        	this.network.reset();
+        	this.controller.reset();
         
         
     },
     
     getInputs: function() {
-        var vo = new NeuralNetPointVO();
+        var vo = new ControlToolboxPointVO();
         vo.id = this.currentId;
         vo.name = this.name.get('value');
         vo.xid = this.xid.get('value');
@@ -75,8 +71,7 @@ points = new StoreView({
         vo.pointType = this.pointType.get('value');
         vo.delay = this.delay.get('value');
        	vo.dataPointId = this.dataPoint.get('value');
-       	vo.trainingDataPointId = this.trainingDataPoint.get('value');
-       	vo.networkId = this.network.get('value');
+       	vo.controllerId = this.controller.get('value');
 
         
         return vo;
@@ -92,16 +87,13 @@ points = new StoreView({
         store: stores.allDataPoints.cache
     }, "pointPicker"),
 
-    trainingDataPoint: new FilteringSelect({
-        store: stores.allDataPoints.cache
-    }, "trainingDataPointId"),
     
-    network: new FilteringSelect({
-    	store: stores.network.cache
-    }, "networkPicker"),
+    controller: new FilteringSelect({
+    	store: stores.controller.cache
+    }, "controllerPicker"),
     
     toggle: function(id) {
-        NeuralNetPointDwr.toggle(id, function(result) {
+        ControlToolboxPointDwr.toggle(id, function(result) {
             if(result.data.enabled){
                 updateImg(
                         $("togglePoint"+ result.data.id),

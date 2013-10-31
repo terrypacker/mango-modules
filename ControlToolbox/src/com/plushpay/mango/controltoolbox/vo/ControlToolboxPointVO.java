@@ -38,12 +38,15 @@ public class ControlToolboxPointVO extends AbstractActionVO<ControlToolboxPointV
 
 	public static final int INPUT_TYPE = 1;
 	public static final int OUTPUT_TYPE = 2;
+	public static final int SETPOINT_TYPE = 3;
     public static final ExportCodes POINT_TYPES = new ExportCodes();
     static {
         POINT_TYPES.addElement(INPUT_TYPE, "INPUT",
-                "neuralnet.point.type.input");
+                "controltoolbox.point.type.input");
         POINT_TYPES.addElement(OUTPUT_TYPE, "OUTPUT",
-        		"neuralnet.point.type.output");
+        		"controltoolbox.point.type.output");
+        POINT_TYPES.addElement(SETPOINT_TYPE, "SETPOINT",
+        		"controltoolbox.point.type.setpoint");
         
     }
 
@@ -63,10 +66,9 @@ public class ControlToolboxPointVO extends AbstractActionVO<ControlToolboxPointV
 
     private int pointType = INPUT_TYPE;
     private int dataPointId; //The data point id to use in the real world
-    private int trainingDataPointId; //The training data point id
-    private int networkId; //The Neural Network Id
+    private int controllerId; //The Controller Id
     @JsonProperty
-    private int delay; //The delay used to offset one point to another
+    private int delay; //The delay used to offset a point in time
     
 	
 	/* (non-Javadoc)
@@ -74,7 +76,7 @@ public class ControlToolboxPointVO extends AbstractActionVO<ControlToolboxPointV
 	 */
 	@Override
 	public String getTypeKey() {
-		return "neuralnet.point.description";
+		return "controltoolbox.point.description";
 	}
 	
 	   /* (non-Javadoc)
@@ -85,9 +87,7 @@ public class ControlToolboxPointVO extends AbstractActionVO<ControlToolboxPointV
         super.jsonWrite(writer);
         writer.writeEntry("pointType", POINT_TYPES.getCode(pointType));
         writer.writeEntry("dataPoint", DataPointDao.instance.getDataPoint(dataPointId).getXid());
-        writer.writeEntry("trainingDataPoint", DataPointDao.instance.getDataPoint(trainingDataPointId).getXid());
-        writer.writeEntry("network", ControlToolboxControllerDao.instance.get(networkId).getXid());
-        
+        writer.writeEntry("controller", ControlToolboxControllerDao.instance.get(controllerId).getXid());
         
     }
     
@@ -108,14 +108,13 @@ public class ControlToolboxPointVO extends AbstractActionVO<ControlToolboxPointV
         }
 
         this.dataPointId = DeltamationCommon.parsePoint(jsonObject, "dataPoint");
-        this.trainingDataPointId = DeltamationCommon.parsePoint(jsonObject, "trainingDataPoint");
-
-        String xid = jsonObject.getString("network");
+ 
+        String xid = jsonObject.getString("controller");
         ControlToolboxControllerVO net = ControlToolboxControllerDao.instance.getByXid(xid);
         if (net == null) {
-            throw new TranslatableJsonException("neuralnet.validate.networkMissing", "network", xid);
+            throw new TranslatableJsonException("neuralnet.validate.networkMissing", "controller", xid);
         }
-        
+        this.controllerId = net.getId();
         
     }
     
@@ -132,18 +131,16 @@ public class ControlToolboxPointVO extends AbstractActionVO<ControlToolboxPointV
         switch(pointType){
         case INPUT_TYPE:
         	 DeltamationCommon.validatePoint(dataPointId, "dataPointId", response, DataTypes.NUMERIC, false);
-        	 DeltamationCommon.validatePoint(trainingDataPointId, "trainingDataPointId", response, DataTypes.NUMERIC, false);
         	break;
         case OUTPUT_TYPE:
         	 DeltamationCommon.validatePoint(dataPointId, "dataPointId", response, DataTypes.NUMERIC, true);
-        	 DeltamationCommon.validatePoint(trainingDataPointId, "trainingDataPointId", response, DataTypes.NUMERIC, true);
         	break;
         }
         
         
-        ControlToolboxControllerVO net = ControlToolboxControllerDao.instance.get(networkId);
+        ControlToolboxControllerVO net = ControlToolboxControllerDao.instance.get(controllerId);
         if (net == null) {
-            response.addContextualMessage("networkId", "neuralnet.validate.networkMissing");
+            response.addContextualMessage("controllerId", "controltoolbox.validate.controllerMissing");
         }
         if(delay < 0)
         	response.addContextualMessage("delay","validate.invalidValue");
@@ -155,14 +152,12 @@ public class ControlToolboxPointVO extends AbstractActionVO<ControlToolboxPointV
     @Override
     public void addProperties(List<TranslatableMessage> list) {
         super.addProperties(list);
-        AuditEventType.addPropertyMessage(list, "neuralnet.point.properties.pointType", pointType);
-        AuditEventType.addPropertyMessage(list, "neuralnet.point.properties.dataPointId",
+        AuditEventType.addPropertyMessage(list, "controltoolbox.point.properties.pointType", pointType);
+        AuditEventType.addPropertyMessage(list, "controltoolbox.point.properties.dataPointId",
                 DataPointDao.instance.getDataPoint(dataPointId, false).getName());
-        AuditEventType.addPropertyMessage(list, "neuralnet.point.properties.networkId",
-                ControlToolboxControllerDao.instance.get(networkId).getName());
-        AuditEventType.addPropertyMessage(list, "neuralnet.point.properties.trainingDataPointId",
-                DataPointDao.instance.getDataPoint(trainingDataPointId, false).getName());
-        AuditEventType.addPropertyMessage(list, "neuralnet.point.properties.delay", delay);
+        AuditEventType.addPropertyMessage(list, "controltoolbox.point.properties.networkId",
+                ControlToolboxControllerDao.instance.get(controllerId).getName());
+        AuditEventType.addPropertyMessage(list, "controltoolbox.point.properties.delay", delay);
     }
 
     /* (non-Javadoc)
@@ -171,19 +166,16 @@ public class ControlToolboxPointVO extends AbstractActionVO<ControlToolboxPointV
     @Override
     public void addPropertyChanges(List<TranslatableMessage> list, ControlToolboxPointVO from) {
         super.addPropertyChanges(list, from);
-        AuditEventType.maybeAddPropertyChangeMessage(list, "neuralnet.point.properties.pointType", from.pointType, pointType);
+        AuditEventType.maybeAddPropertyChangeMessage(list, "controltoolbox.point.properties.pointType", from.pointType, pointType);
 
-        AuditEventType.maybeAddPropertyChangeMessage(list, "neuralnet.point.properties.dataPointId",
+        AuditEventType.maybeAddPropertyChangeMessage(list, "controltoolbox.point.properties.dataPointId",
                 DataPointDao.instance.getDataPoint(from.dataPointId, false).getName(),
                 DataPointDao.instance.getDataPoint(dataPointId, false).getName());
         AuditEventType.maybeAddPropertyChangeMessage(list, "neuralnet.point.properties.networkId",
-                ControlToolboxControllerDao.instance.get(from.networkId).getName(),
-                ControlToolboxControllerDao.instance.get(networkId).getName());
-        AuditEventType.maybeAddPropertyChangeMessage(list, "neuralnet.point.properties.trainingDataPointId",
-                DataPointDao.instance.getDataPoint(from.trainingDataPointId, false).getName(),
-                DataPointDao.instance.getDataPoint(trainingDataPointId, false).getName());
+                ControlToolboxControllerDao.instance.get(from.controllerId).getName(),
+                ControlToolboxControllerDao.instance.get(controllerId).getName());
         
-        AuditEventType.maybeAddPropertyChangeMessage(list, "neuralnet.point.properties.delay", from.delay, delay);
+        AuditEventType.maybeAddPropertyChangeMessage(list, "controltoolbox.point.properties.delay", from.delay, delay);
     }
 
     
@@ -192,6 +184,7 @@ public class ControlToolboxPointVO extends AbstractActionVO<ControlToolboxPointV
      */
     
     private static final int version = 1;
+
     
     private void writeObject(ObjectOutputStream out) throws IOException {
         out.writeInt(version);
@@ -199,8 +192,7 @@ public class ControlToolboxPointVO extends AbstractActionVO<ControlToolboxPointV
         out.writeBoolean(enabled);
         out.writeInt(pointType);
         out.writeInt(dataPointId);
-        out.writeInt(networkId);
-        out.writeInt(trainingDataPointId);
+        out.writeInt(controllerId);
         out.writeInt(delay);
     }
     
@@ -213,8 +205,7 @@ public class ControlToolboxPointVO extends AbstractActionVO<ControlToolboxPointV
             enabled = in.readBoolean();
             pointType = in.readInt();
             dataPointId = in.readInt();
-            networkId = in.readInt();
-            trainingDataPointId = in.readInt();
+            controllerId = in.readInt();
             delay = in.readInt();
         }
         else {
@@ -238,23 +229,17 @@ public class ControlToolboxPointVO extends AbstractActionVO<ControlToolboxPointV
 	public void setDataPointId(int dataPointId) {
 		this.dataPointId = dataPointId;
 	}
-	public int getNetworkId() {
-		return networkId;
+	public int getControllerId() {
+		return controllerId;
 	}
-	public void setNetworkId(int networkId) {
-		this.networkId = networkId;
+	public void setControllerId(int id) {
+		this.controllerId = id;
 	}
 	public int getDelay() {
 		return delay;
 	}
 	public void setDelay(int delay) {
 		this.delay = delay;
-	}
-	public int getTrainingDataPointId() {
-		return trainingDataPointId;
-	}
-	public void setTrainingDataPointId(int trainingDataPointId) {
-		this.trainingDataPointId = trainingDataPointId;
 	}
 
 	/* JSP Helpers */

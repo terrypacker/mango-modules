@@ -7,9 +7,9 @@
 <!-- Edit Div -->
 <div id="editPointDiv" style="display: none" class="borderDiv marB marR">
   <div style="float:left">
-    <tag:img src="${modulePath}/web/img/neural_networking.png" title="common.edit" />
-    <span class="smallTitle"><fmt:message key="neuralnet.point.description"/></span>
-    <tag:help id="neural-point-help"/>
+    <tag:img src="${modulePath}/web/img/pid_loop.png" title="common.edit" />
+    <span class="smallTitle"><fmt:message key="controltoolbox.point.description"/></span>
+    <tag:help id="control-point-help"/>
   </div>
   
   <div style="float:right">
@@ -43,17 +43,11 @@
     </div>
   </div>
 
-  <div class="formItem">
-    <label class="formLabelRequired" for="trainingDataPointId"><fmt:message key="neuralnet.point.properties.trainingDataPointId"/></label>
-    <div class="formField">
-      <div id="trainingDataPointId"></div>
-    </div>
-  </div>
   
   <div class="formItem">
-    <label class="formLabelRequired" for="networkPicker"><fmt:message key="neuralnet.point.properties.networkId"/></label>
+    <label class="formLabelRequired" for="controllerPicker"><fmt:message key="controltoolbox.point.properties.controllerId"/></label>
     <div class="formField">
-      <div id="networkPicker"></div>
+      <div id="controllerPicker"></div>
     </div>
   </div>
   

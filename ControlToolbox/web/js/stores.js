@@ -10,19 +10,19 @@ if(typeof stores == 'undefined')
 require(["deltamation/CachedDwrStore", "dojo/Deferred","dojo/store/util/QueryResults"],
 function(CachedDwrStore,QueryResults) {
 
-if (typeof NeuralNetNetworkDwr !== 'undefined') {
-    stores.network = new CachedDwrStore(NeuralNetNetworkDwr, "NeuralNetNetworkDwr");
-    stores.network.dwr.queryLocally = false;
+if (typeof ControlToolboxControllerDwr !== 'undefined') {
+    stores.controller = new CachedDwrStore(ControlToolboxControllerDwr, "ControlToolboxControllerDwr");
+    stores.controller.dwr.queryLocally = false;
 }
 
-if (typeof NeuralNetPointDwr !== 'undefined') {
-    stores.point = new CachedDwrStore(NeuralNetPointDwr, "NeuralNetPointDwr");
+if (typeof ControlToolboxPointDwr !== 'undefined') {
+    stores.point = new CachedDwrStore(ControlToolboxPointDwr, "ControlToolboxPointDwr");
     stores.point.dwr.queryLocally = false;
 }
 
-if (typeof NeuralNetHiddenLayerDwr !== 'undefined') {
-    stores.layer = new CachedDwrStore(NeuralNetHiddenLayerDwr, "NeuralNetHiddenLayerDwr");
-    stores.layer.dwr.queryLocally = false;
+if (typeof ControlToolboxAlgorithmDwr !== 'undefined') {
+    stores.algorithm = new CachedDwrStore(ControlToolboxAlgorithmDwr, "ControlToolboxAlgorithmDwr");
+    stores.algorithm.dwr.queryLocally = false;
 }
 
 if (typeof DataPointDwr !== 'undefined') {

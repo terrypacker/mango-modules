@@ -29,7 +29,7 @@ public class ControlToolboxMenuItemDefinition extends MenuItemDefinition{
 	@Override
 	public String getTextKey(HttpServletRequest request,
 			HttpServletResponse response) {
-		return "neuralnet.header.icontext";
+		return "controltoolbox.header.icontext";
 	}
 
 	/* (non-Javadoc)
@@ -38,7 +38,7 @@ public class ControlToolboxMenuItemDefinition extends MenuItemDefinition{
 	@Override
 	public String getImage(HttpServletRequest request,
 			HttpServletResponse response) {
-		return "web/img/neural_networking.png";
+		return "web/img/pid_loop.png";
 	}
 
     /* (non-Javadoc)
@@ -46,7 +46,7 @@ public class ControlToolboxMenuItemDefinition extends MenuItemDefinition{
      */
     @Override
     public String getHref(HttpServletRequest request, HttpServletResponse response) {
-        return "/neural_net.shtm";
+        return "/control_toolbox.shtm";
     }
 	
 }

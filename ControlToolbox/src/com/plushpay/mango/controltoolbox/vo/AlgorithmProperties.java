@@ -7,6 +7,7 @@ package com.plushpay.mango.controltoolbox.vo;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.List;
 
 import com.serotonin.json.JsonException;
@@ -16,71 +17,58 @@ import com.serotonin.json.spi.JsonSerializable;
 import com.serotonin.json.type.JsonObject;
 import com.serotonin.m2m2.i18n.ProcessResult;
 import com.serotonin.m2m2.i18n.TranslatableMessage;
+import com.serotonin.m2m2.util.ChangeComparable;
+import com.serotonin.m2m2.vo.DataPointVO;
 
 /**
  * @author Terry Packer
  *
  */
-public class AlgorithmProperties implements JsonSerializable{
+public abstract class AlgorithmProperties<T> implements Serializable, Cloneable, JsonSerializable, ChangeComparable<T>{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	/* (non-Javadoc)
 	 * @see com.serotonin.json.spi.JsonSerializable#jsonRead(com.serotonin.json.JsonReader, com.serotonin.json.type.JsonObject)
 	 */
 	@Override
-	public void jsonRead(JsonReader reader, JsonObject jsonObject)
-			throws JsonException {
-		// TODO Auto-generated method stub
-		
-	}
+	public abstract void jsonRead(JsonReader reader, JsonObject jsonObject)
+			throws JsonException;
 
 	/* (non-Javadoc)
 	 * @see com.serotonin.json.spi.JsonSerializable#jsonWrite(com.serotonin.json.ObjectWriter)
 	 */
 	@Override
-	public void jsonWrite(ObjectWriter writer) throws IOException,
-			JsonException {
-		// TODO Auto-generated method stub
-		
-	}
+	public abstract void jsonWrite(ObjectWriter writer) throws IOException,
+			JsonException ;
 	
 	
-	public void validate(ProcessResult response) {
-		
-	}
+	public abstract void validate(ProcessResult response);
 
 	/**
 	 * @param list
 	 */
-	public void addProperties(List<TranslatableMessage> list) {
-		// TODO Auto-generated method stub
-		
-	}
+	public abstract void addProperties(List<TranslatableMessage> list);
 
 	/**
 	 * @param list
 	 * @param properties
 	 */
-	public void addPropertyChanges(List<TranslatableMessage> list,
-			AlgorithmProperties properties) {
-		// TODO Auto-generated method stub
-		
-	}
+	public abstract void addPropertyChanges(List<TranslatableMessage> list,
+			AlgorithmProperties<T> properties) ;
 
 	/**
 	 * @param out
 	 */
-	public void writeObject(ObjectOutputStream out) {
-		// TODO Auto-generated method stub
-		
-	}
+	public abstract void writeObject(ObjectOutputStream out)  throws IOException;
 
 	/**
 	 * @param in
 	 */
-	public void readObject(ObjectInputStream in) {
-		// TODO Auto-generated method stub
-		
-	}
-	
+	public abstract void readObject(ObjectInputStream in)  throws IOException;
+
 
 }

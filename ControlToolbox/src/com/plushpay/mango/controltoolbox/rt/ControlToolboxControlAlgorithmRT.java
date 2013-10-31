@@ -4,6 +4,8 @@
  */
 package com.plushpay.mango.controltoolbox.rt;
 
+import com.plushpay.mango.controltoolbox.vo.ControlToolboxAlgorithmVO;
+
 /**
  * Basic interface for all control algorithms.
  * 
@@ -20,26 +22,28 @@ package com.plushpay.mango.controltoolbox.rt;
  * @author Terry Packer
  *
  */
-public interface ControlToolboxControlAlgorithmRT {
+public abstract class ControlToolboxControlAlgorithmRT {
+
+	
 
 	/**
 	 * Set the setpoints
 	 * @param setpointVector
 	 */
-	public void setSetpoint(double[] setpointVector);
+	public abstract void setSetpoint(double[] setpointVector);
 	/**
 	 * @param inputVector
 	 */
-	public void setInput(double[] inputVector);
+	public abstract void setInput(double[] inputVector);
 
 	/**
 	 * @return
 	 */
-	public double[] getOutput();
+	public abstract double[] getOutput();
 	
 	/**
 	 * 
 	 */
-	public void calculate();
+	public abstract void calculate();
 
 }

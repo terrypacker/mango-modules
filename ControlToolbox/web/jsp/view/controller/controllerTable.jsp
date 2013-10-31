@@ -5,17 +5,17 @@
 <%@ include file="/WEB-INF/jsp/include/tech.jsp" %>
 
 <!-- Table Div -->
-<div id="networkDiv" class="borderDivPadded marB" >
+<div id="controllerDiv" class="borderDivPadded marB" >
   <tag:img png="icon_ds" title="dsList.dataSources"/>
-  <span class="smallTitle"><fmt:message key="neuralnet.edit.configuredNetworks"/></span>
-  <tag:help id="neural-network-help"/>
+  <span class="smallTitle"><fmt:message key="controltoolbox.edit.configuredControllers"/></span>
+  <tag:help id="control-controller-help"/>
 
-  <div id="networkTable"></div>
+  <div id="controllerTable"></div>
 
-  <span class="smallTitle"><fmt:message key="neuralnet.edit.addNetwork"/></span>
-  <tag:img png="add" title="common.add" id="addNetwork" onclick="networks.open(-1)"/>
+  <span class="smallTitle"><fmt:message key="controltoolbox.edit.addController"/></span>
+  <tag:img png="add" title="common.add" id="addController" onclick="controllers.open(-1)"/>
 
 </div>
 
 <!-- Include the Edit Div -->
-<jsp:include page="networkEdit.jsp"/>
+<jsp:include page="controllerEdit.jsp"/>

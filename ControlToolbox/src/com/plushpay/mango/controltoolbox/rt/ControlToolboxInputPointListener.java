@@ -14,16 +14,16 @@ import com.serotonin.m2m2.rt.dataImage.PointValueTime;
 public class ControlToolboxInputPointListener implements DataPointListener{
 	
 	private ControlToolboxPointRT rt;
-	private ControlToolboxControllerRT network;
+	private ControlToolboxControllerRT controller;
 
 	/**
-	 * @param network
+	 * @param controller
 	 * @param pointRT
 	 */
-	public ControlToolboxInputPointListener(ControlToolboxControllerRT network, ControlToolboxPointRT rt) {
+	public ControlToolboxInputPointListener(ControlToolboxControllerRT controller, ControlToolboxPointRT rt) {
 
 		this.rt = rt;
-		this.network = network;
+		this.controller = controller;
 	}
 
 
@@ -41,7 +41,7 @@ public class ControlToolboxInputPointListener implements DataPointListener{
 	 */
 	@Override
 	public void pointUpdated(PointValueTime newValue) {
-		//TODO May want to listen to this for the network
+		//TODO May want to listen to this for the controller
 		
 	}
 
@@ -52,7 +52,7 @@ public class ControlToolboxInputPointListener implements DataPointListener{
 	public void pointChanged(PointValueTime oldValue, PointValueTime newValue) {
 		//Only called when value changes
 		rt.updatePoint(newValue);
-		this.network.updateInputs(rt);
+		this.controller.updateInputs(rt);
 	}
 
 	/* (non-Javadoc)

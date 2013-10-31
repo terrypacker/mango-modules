@@ -14,9 +14,12 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.plushpay.mango.controltoolbox.ControlToolboxSystemEventTypeDefinition;
+import com.plushpay.mango.controltoolbox.dao.ControlToolboxAlgorithmDao;
 import com.plushpay.mango.controltoolbox.dao.ControlToolboxPointDao;
+import com.plushpay.mango.controltoolbox.vo.ControlToolboxAlgorithmVO;
 import com.plushpay.mango.controltoolbox.vo.ControlToolboxControllerVO;
 import com.plushpay.mango.controltoolbox.vo.ControlToolboxPointVO;
+import com.plushpay.mango.controltoolbox.vo.PidAlgorithmProperties;
 import com.serotonin.m2m2.Common;
 import com.serotonin.m2m2.db.dao.DataPointDao;
 import com.serotonin.m2m2.db.dao.PointValueDao;
@@ -50,13 +53,18 @@ public class ControlToolboxControllerRT extends AbstractRT<ControlToolboxControl
     //The brain
     private ControlToolboxControlAlgorithmRT algorithm;
     private double[] inputVector; //Referenceable vector of the inputs
-    private Object networkLock = new Object(); //To lock algorithm on input change
+    private double[] setpointVector; //Referenceable vector of the setpoints
+    private Object lock = new Object(); //To lock algorithm on input change
     
     private Map<Integer,ControlToolboxPointRT> outputPointMap; //Map of output array index to points
     private Map<Integer,ControlToolboxPointRT> inputPointMap; //Map of input array index to points
+    private Map<Integer,ControlToolboxPointRT> setpointMap; //Map of setpoint array index to points
+    
     
     //The input listeners
     private List<ControlToolboxInputPointListener> listeners = new ArrayList<ControlToolboxInputPointListener>();
+    //The setpoint listeners
+    private List<ControlToolboxInputPointListener> setpointListeners = new ArrayList<ControlToolboxInputPointListener>();
  	
     /**
 	 * @param vo
@@ -94,7 +102,18 @@ public class ControlToolboxControllerRT extends AbstractRT<ControlToolboxControl
 	 * 
 	 */
 	private void configureAlgorithm() {
-		// TODO Auto-generated method stub
+		ControlToolboxAlgorithmVO algorithm = ControlToolboxAlgorithmDao.instance.get(this.vo.getAlgorithmId());
+		if(algorithm != null){
+			
+			switch(algorithm.getAlgorithmType()){
+				case ControlToolboxAlgorithmVO.PID_TYPE:
+					PidAlgorithmProperties props = (PidAlgorithmProperties)algorithm.getProperties();
+					this.algorithm = new PidControlAlgorithmRT(this.inputPointMap.size(), this.setpointMap.size(), this.outputPointMap.size(),props.getP(), props.getI(), props.getD(),props.getSamplePeriod());
+				break;
+			}
+		}else{
+			//TODO Notify user that the algorithm DNE
+		}
 		
 	}
 
@@ -104,11 +123,30 @@ public class ControlToolboxControllerRT extends AbstractRT<ControlToolboxControl
 	 */
 	private void configureDataPointListeners() throws DataPointException{
 		
-		List<ControlToolboxPointVO> points = ControlToolboxPointDao.instance.getNetworkPoints(ControlToolboxPointVO.INPUT_TYPE,this.vo.getId());
-		inputVector = new double[points.size()];
+		//Setup Setpoints
+		List<ControlToolboxPointVO> setPoints = ControlToolboxPointDao.instance.getControllerPoints(ControlToolboxPointVO.SETPOINT_TYPE,this.vo.getId());
+		
+		setpointVector = new double[setPoints.size()];
+		int setpointVectorIndex = 0;
+		setpointMap = new HashMap<Integer,ControlToolboxPointRT>();
+		for(ControlToolboxPointVO point : setPoints){
+			safeGetPoint(point.getDataPointId()); //Ensure the point is enabled
+			ControlToolboxPointRT rt = new ControlToolboxPointRT(point,setpointVectorIndex);
+			setpointMap.put(setpointVectorIndex, rt);
+			ControlToolboxInputPointListener listener = new ControlToolboxInputPointListener(this,rt);
+			setpointListeners.add(listener);			
+			setpointVectorIndex++;
+		}
+
+		
+		
+		//Setup Inputs
+		List<ControlToolboxPointVO> inputPoints = ControlToolboxPointDao.instance.getControllerPoints(ControlToolboxPointVO.INPUT_TYPE,this.vo.getId());
+		
+		inputVector = new double[inputPoints.size()];
 		int inputVectorIndex = 0;
 		inputPointMap = new HashMap<Integer,ControlToolboxPointRT>();
-		for(ControlToolboxPointVO point : points){
+		for(ControlToolboxPointVO point : inputPoints){
 			safeGetPoint(point.getDataPointId()); //Ensure the point is enabled
 			ControlToolboxPointRT rt = new ControlToolboxPointRT(point,inputVectorIndex);
 			inputPointMap.put(inputVectorIndex, rt);
@@ -116,11 +154,16 @@ public class ControlToolboxControllerRT extends AbstractRT<ControlToolboxControl
 			listeners.add(listener);			
 			inputVectorIndex++;
 		}
+		
+		
+		
+		
+		
 	}
 	
 	private void configureOutputPoints() throws DataPointException{
 		//Setup the Output Map
-		List<ControlToolboxPointVO> points = ControlToolboxPointDao.instance.getNetworkPoints(ControlToolboxPointVO.OUTPUT_TYPE,this.vo.getId());
+		List<ControlToolboxPointVO> points = ControlToolboxPointDao.instance.getControllerPoints(ControlToolboxPointVO.OUTPUT_TYPE,this.vo.getId());
 		int vectorIndex = 0;
 		outputPointMap = new HashMap<Integer,ControlToolboxPointRT>();
 		for(ControlToolboxPointVO point : points){
@@ -185,15 +228,32 @@ public class ControlToolboxControllerRT extends AbstractRT<ControlToolboxControl
 	 */
 	private void addDataPointListeners() throws DataPointException {
 		PointValueDao dao = new PointValueDao();
+		
+		//Configure the setpoints
+		for(ControlToolboxInputPointListener listener : this.setpointListeners){
+			//TODO Could speed this up by only grabbing a list for a given point once
+			// for systems with a huge delay you will be grabbing one list per point
+			List<PointValueTime> values = dao.getLatestPointValues(listener.getRt().getVo().getDataPointId(), listener.getRt().getVo().getDelay()+1);
+			for(PointValueTime value : values){
+				listener.getRt().updatePoint(value);
+			}
+			//Also set the input vector too
+			this.setpointVector[listener.getRt().getVectorIndex()] = listener.getRt().getCurrentValue().getDoubleValue();
+			this.algorithm.setSetpoint(setpointVector);
+			Common.runtimeManager.addDataPointListener(listener.getRt().getVo().getDataPointId(), listener);
+		}
+		
+		//Now for the inputs
 		for(ControlToolboxInputPointListener listener : this.listeners){
 			//TODO Could speed this up by only grabbing a list for a given point once
 			// for systems with a huge delay you will be grabbing one list per point
-			List<PointValueTime> values = dao.getLatestPointValues(listener.getRt().getVo().getDataPointId(), listener.getRt().getVo().getDelay());
+			List<PointValueTime> values = dao.getLatestPointValues(listener.getRt().getVo().getDataPointId(), listener.getRt().getVo().getDelay()+1);
 			for(PointValueTime value : values){
 				listener.getRt().updatePoint(value);
 			}
 			//Also set the input vector too
 			this.inputVector[listener.getRt().getVectorIndex()] = listener.getRt().getCurrentValue().getDoubleValue();
+			this.algorithm.setInput(inputVector);
 			Common.runtimeManager.addDataPointListener(listener.getRt().getVo().getDataPointId(), listener);
 		}
 	}
@@ -202,9 +262,14 @@ public class ControlToolboxControllerRT extends AbstractRT<ControlToolboxControl
 	 *  Remove the listeners for the points
 	 */
 	private void removeDataPointListeners() {
+		for(ControlToolboxInputPointListener listener : this.setpointListeners){
+			Common.runtimeManager.removeDataPointListener(listener.getRt().getVo().getDataPointId(), listener);
+		}
+		
 		for(ControlToolboxInputPointListener listener : this.listeners){
 			Common.runtimeManager.removeDataPointListener(listener.getRt().getVo().getDataPointId(), listener);
 		}
+		
 	}
 	
 	/**
@@ -214,10 +279,16 @@ public class ControlToolboxControllerRT extends AbstractRT<ControlToolboxControl
 	 * @param newValue
 	 */
 	public void updateInputs(ControlToolboxPointRT pointRt) {
-		synchronized(networkLock){
+		synchronized(lock){
 			
-			this.inputVector[pointRt.getVectorIndex()] = pointRt.getNormalizedCurrentValue();
-			this.algorithm.setInput(inputVector);
+			//Are we an input or a setpoint
+			if(pointRt.getVo().getPointType() == ControlToolboxPointVO.INPUT_TYPE){
+				this.inputVector[pointRt.getVectorIndex()] = pointRt.getNormalizedCurrentValue();
+				this.algorithm.setInput(inputVector);
+			}else if(pointRt.getVo().getPointType() == ControlToolboxPointVO.SETPOINT_TYPE){
+				this.setpointVector[pointRt.getVectorIndex()] = pointRt.getNormalizedCurrentValue();
+				this.algorithm.setSetpoint(setpointVector);
+			}
 			
 			//Calculate the new output
 			this.algorithm.calculate();
@@ -237,6 +308,7 @@ public class ControlToolboxControllerRT extends AbstractRT<ControlToolboxControl
 					LOG.error("Network: " + this.vo.getName() + " computed output " + vo.getName() + " to be NaN.");
 
 			}
+			
 		}
 		
 	}
@@ -273,7 +345,7 @@ public class ControlToolboxControllerRT extends AbstractRT<ControlToolboxControl
 	 */
 	@Override
 	public TranslatableMessage getSetPointSourceMessage() {
-        return new TranslatableMessage("neuralnet.network.outputPointAnnotation", vo.getName());
+        return new TranslatableMessage("controltoolbox.algorithm.outputPointAnnotation", vo.getName());
 	}
 
 	/* (non-Javadoc)
@@ -281,7 +353,7 @@ public class ControlToolboxControllerRT extends AbstractRT<ControlToolboxControl
 	 */
 	@Override
 	public void raiseRecursionFailureEvent() {
-	       raiseFailureEvent(new TranslatableMessage("neuralnet.event.system.recursionFailure", vo.getName()));		
+	       raiseFailureEvent(new TranslatableMessage("controltoolbox.event.system.recursionFailure", vo.getName()));		
 	}
 
 	public double[] getInputVector() {

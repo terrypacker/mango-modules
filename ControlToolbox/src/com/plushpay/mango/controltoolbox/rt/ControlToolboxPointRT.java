@@ -18,8 +18,8 @@ public class ControlToolboxPointRT {
 	private ControlToolboxPointVO vo;
 	private PointValueTime currentValue;
     private Integer vectorIndex; //index in vector (To match training to real input/output in MIMO systems)
-    private Double max; //Max value from training
-    private Double min; //Min value from training
+    private Double max = 1D; //Max value from training (TODO NOT USING)
+    private Double min = 0D; //Min value from training (TODO NOT USING)
     private boolean ready = false; //We are ready when we have a current value;
     private LinkedList<PointValueTime> window; //FIFO window
     
@@ -89,7 +89,7 @@ public class ControlToolboxPointRT {
 		double norm = (doubleValue - min)/(max-min);
 		return norm;
 	}
-	
+		
 	/**
 	 * Used to prepare an output for the world
 	 * @param d

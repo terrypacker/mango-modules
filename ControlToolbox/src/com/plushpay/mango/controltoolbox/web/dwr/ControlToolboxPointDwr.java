@@ -57,31 +57,9 @@ public class ControlToolboxPointDwr extends AbstractDwr<ControlToolboxPointVO,Co
 	}
 	
 	@DwrPermission(user = true)
-	public ProcessResult createDelayedInputPoints(int networkId, int dataPointId, int trainingDataPointId, int numberOfPoints, int delayStart){
+	public ProcessResult removeAllInputs(int controllerId){
 		ProcessResult result = new ProcessResult();
-		int delay = delayStart;
-		for(int i=0; i<numberOfPoints; i++){
-			ControlToolboxPointVO newPoint = new ControlToolboxPointVO();
-			newPoint.setDataPointId(dataPointId);
-			newPoint.setTrainingDataPointId(trainingDataPointId);
-			newPoint.setPointType(ControlToolboxPointVO.INPUT_TYPE);
-			newPoint.setNetworkId(networkId);
-			newPoint.setName(newPoint.getDataPointName() + " delay " + delay);
-			newPoint.setDelay(delay);
-			newPoint.setEnabled(true);
-			delay++;
-			
-			//Save it
-			ControlToolboxPointDao.instance.save(newPoint);
-		}
-		
-		return result;
-	}
-	
-	@DwrPermission(user = true)
-	public ProcessResult removeAllInputs(int networkId){
-		ProcessResult result = new ProcessResult();
-		List<ControlToolboxPointVO> points = this.dao.getNetworkPoints(ControlToolboxPointVO.INPUT_TYPE, networkId);
+		List<ControlToolboxPointVO> points = this.dao.getControllerPoints(ControlToolboxPointVO.INPUT_TYPE, controllerId);
 		for(ControlToolboxPointVO vo : points){
 			this.dao.delete(vo.getId());
 		}

@@ -37,7 +37,7 @@ public class ControlToolboxAlgorithmVO extends AbstractVO<ControlToolboxAlgorith
 
 	public static final String XID_PREFIX = "CTA_";
 
-	private int type = PID_TYPE;  //Algorithm Code 
+	private int algorithmType = PID_TYPE;  //Algorithm Code 
 	private AlgorithmProperties properties;
 
 	/*
@@ -52,7 +52,7 @@ public class ControlToolboxAlgorithmVO extends AbstractVO<ControlToolboxAlgorith
 			JsonException {
 		super.jsonWrite(writer);
 
-        writer.writeEntry("type", ALGORITHM_TYPE_CODES.getCode(type));
+        writer.writeEntry("algorithmType", ALGORITHM_TYPE_CODES.getCode(algorithmType));
         properties.jsonWrite(writer);
 		
 		
@@ -69,16 +69,16 @@ public class ControlToolboxAlgorithmVO extends AbstractVO<ControlToolboxAlgorith
 			throws JsonException {
 		super.jsonRead(reader, jsonObject);
 		
-        String text = jsonObject.getString("type");
+        String text = jsonObject.getString("algorithmType");
         if (text == null) {
-            throw new TranslatableJsonException("emport.error.missing", "type", ALGORITHM_TYPE_CODES.getCodeList());
+            throw new TranslatableJsonException("emport.error.missing", "algorithmType", ALGORITHM_TYPE_CODES.getCodeList());
         }
-        type = ALGORITHM_TYPE_CODES.getId(text);
-        if (!ALGORITHM_TYPE_CODES.isValidId(type)) {
-            throw new TranslatableJsonException("emport.error.invalid", "type", text, ALGORITHM_TYPE_CODES.getCodeList());
+        algorithmType = ALGORITHM_TYPE_CODES.getId(text);
+        if (!ALGORITHM_TYPE_CODES.isValidId(algorithmType)) {
+            throw new TranslatableJsonException("emport.error.invalid", "algorithmType", text, ALGORITHM_TYPE_CODES.getCodeList());
         }
 
-        switch(type){
+        switch(algorithmType){
         case PID_TYPE:
             properties  = new PidAlgorithmProperties();
         	break;
@@ -98,8 +98,8 @@ public class ControlToolboxAlgorithmVO extends AbstractVO<ControlToolboxAlgorith
 	public void validate(ProcessResult response) {
 		super.validate(response);
 		
-        if (!ALGORITHM_TYPE_CODES.isValidId(type)) {
-            response.addContextualMessage("type", "validate.invalidValue");
+        if (!ALGORITHM_TYPE_CODES.isValidId(algorithmType)) {
+            response.addContextualMessage("algorithmType", "validate.invalidValue");
         }
 
         properties.validate(response);
@@ -116,7 +116,7 @@ public class ControlToolboxAlgorithmVO extends AbstractVO<ControlToolboxAlgorith
 	@Override
 	public void addProperties(List<TranslatableMessage> list) {
 		super.addProperties(list);
-        AuditEventType.addPropertyMessage(list, "controltoolbox.algorithm.properties.type", type);
+        AuditEventType.addPropertyMessage(list, "controltoolbox.algorithm.properties.type", algorithmType);
         this.properties.addProperties(list);
 	}
 
@@ -132,7 +132,7 @@ public class ControlToolboxAlgorithmVO extends AbstractVO<ControlToolboxAlgorith
 			ControlToolboxAlgorithmVO from) {
 		super.addPropertyChanges(list, from);
         
-		AuditEventType.maybeAddPropertyChangeMessage(list, "controltoolbox.algorithm.properties.type", from.type, type);
+		AuditEventType.maybeAddPropertyChangeMessage(list, "controltoolbox.algorithm.properties.type", from.algorithmType, algorithmType);
 		this.properties.addPropertyChanges(list,from.getProperties());
 	
 	}
@@ -146,7 +146,7 @@ public class ControlToolboxAlgorithmVO extends AbstractVO<ControlToolboxAlgorith
 	private void writeObject(ObjectOutputStream out) throws IOException {
 		out.writeInt(version);
 		SerializationHelper.writeSafeUTF(out, name);
-		out.writeInt(type);
+		out.writeInt(algorithmType);
 		this.properties.writeObject(out);
 	}
 
@@ -157,8 +157,8 @@ public class ControlToolboxAlgorithmVO extends AbstractVO<ControlToolboxAlgorith
 		// elegantly handled.
 		if (ver == 1) {
 			name = SerializationHelper.readSafeUTF(in);
-			type = in.readInt();
-			switch(type){
+			algorithmType = in.readInt();
+			switch(algorithmType){
 				case PID_TYPE:
 				properties = new PidAlgorithmProperties();
 				break;
@@ -175,11 +175,11 @@ public class ControlToolboxAlgorithmVO extends AbstractVO<ControlToolboxAlgorith
 
 	
 	/* Getters and Setters */
-	public int getType() {
-		return type;
+	public int getAlgorithmType() {
+		return algorithmType;
 	}
-	public void setType(int type) {
-		this.type = type;
+	public void setAlgorithmType(int type) {
+		this.algorithmType = type;
 	}
 	public AlgorithmProperties getProperties() {
 		return properties;
@@ -195,7 +195,7 @@ public class ControlToolboxAlgorithmVO extends AbstractVO<ControlToolboxAlgorith
 	 */
 	@Override
 	public String getTypeKey() {
-		return "neuralnet.hiddenlayer.description";
+		return "controltoolbox.algorithm.description";
 	}
 
 	

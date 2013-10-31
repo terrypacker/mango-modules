@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
 
-<project name="NeuralNet" basedir="." default="deploy">
+<project name="ControlToolbox" basedir="." default="deploy">
   <import file="${coreHome}/module-build.xml"/>
 </project>

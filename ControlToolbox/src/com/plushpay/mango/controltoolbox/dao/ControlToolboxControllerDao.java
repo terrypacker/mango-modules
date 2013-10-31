@@ -43,13 +43,7 @@ public class ControlToolboxControllerDao extends AbstractDao<ControlToolboxContr
                 "xid",
                 "name",
                 "enabled",
-                "transferFunctionType",
-                "learningRate",
-                "maxError",
-                "learningMaxIterations",
-                "trainingPeriodStart",
-                "trainingPeriodEnd",
-                "properties"
+                "algorithmId"
                 );
     }
 
@@ -78,13 +72,7 @@ public class ControlToolboxControllerDao extends AbstractDao<ControlToolboxContr
 			vo.getXid(),
 			vo.getName(),
 			boolToChar(vo.isEnabled()),
-			vo.getTransferFunctionType(),
-			vo.getLearningRate(),
-			vo.getMaxError(),
-			vo.getLearningMaxIterations(),
-			vo.getTrainingPeriodStart(),
-			vo.getTrainingPeriodEnd(),
-			vo.getPropertiesString()
+			vo.getAlgorithmId()
 		};
 	}
 
@@ -111,10 +99,10 @@ public class ControlToolboxControllerDao extends AbstractDao<ControlToolboxContr
 	 */
 	@Override
 	public RowMapper<ControlToolboxControllerVO> getRowMapper() {
-		return new NeuralNetNetworkRowMapper();
+		return new ControlToolboxControllerRowMapper();
 	}
 	
-    class NeuralNetNetworkRowMapper implements RowMapper<ControlToolboxControllerVO> {
+    class ControlToolboxControllerRowMapper implements RowMapper<ControlToolboxControllerVO> {
         @Override
         public ControlToolboxControllerVO mapRow(ResultSet rs, int rowNum) throws SQLException {
             int i = 0;
@@ -123,13 +111,7 @@ public class ControlToolboxControllerDao extends AbstractDao<ControlToolboxContr
             net.setXid(rs.getString(++i));
             net.setName(rs.getString(++i));
             net.setEnabled(charToBool(rs.getString(++i)));
-            net.setTransferFunctionType(rs.getInt(++i));
-            net.setLearningRate(rs.getDouble(++i));
-            net.setMaxError(rs.getDouble(++i));
-            net.setLearningMaxIterations(rs.getInt(++i));
-            net.setTrainingPeriodStart(rs.getLong(++i));
-            net.setTrainingPeriodEnd(rs.getLong(++i));
-            net.setPropertiesString(rs.getString(++i));
+            net.setAlgorithmId(rs.getInt(++i));
             return net;
         }
     }
