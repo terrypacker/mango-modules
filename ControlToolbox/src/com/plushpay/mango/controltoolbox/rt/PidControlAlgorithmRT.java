@@ -19,16 +19,24 @@ public class PidControlAlgorithmRT extends ControlToolboxControlAlgorithmRT{
 	private double[] inputVector;
 	private double[] setpointVector; //Ideal setpoint
 	private double[] outputVector;
+
+	//Internal states of algorithm
+	private RealVector previousErrorVector; //Holds error from last time
+	private RealVector integralVector; //Holds the previous integrated value
+	private RealVector derivativeVector; //Holds the previous derived value
+	
+	//Settings (Maybe move to superclass)
 	private double[] inputLowLimit;
 	private double[] inputHighLimit;
+	
+	private double[] setpointLowLimit;
+	private double[] setpointHighLimit;
+	
 	private double[] outputLowLimit;
 	private double[] outputHighLimit;
 	private double samplePeriod; //The number of seconds between samples
 	
-	
-	private RealVector previousErrorVector; //Holds error from last time
-	private RealVector integralVector; //Holds the previous integrated value
-	private RealVector derivativeVector; //Holds the previous derived value
+	//Algo specific settings
 	private double p; //P Value
 	private double i; //I Value
 	private double d; //D Value
@@ -46,22 +54,34 @@ public class PidControlAlgorithmRT extends ControlToolboxControlAlgorithmRT{
 	 * @param d
 	 * @param samplePeriod
 	 */
-	public PidControlAlgorithmRT(int numInputs, int numSetpoints, int numOutputs, double p, double i, double d, double samplePeriod){
+	public PidControlAlgorithmRT(double[] inputVector, double[] inputHighLimitVector, double[] inputLowLimitVector,
+			double[] setpointVector, double[] setpointHighLimitVector, double[] setpointLowLimitVector, 
+			double[] outputVector, double[] outputHighLimitVector, double[] outputLowLimitVector,
+			double p, double i, double d, double samplePeriod){
 		
 		
-		this.inputVector = new double[numInputs];
-		this.outputVector = new double[numOutputs];
-		this.setpointVector = new double[numSetpoints];
+		this.inputVector = inputVector;
+		this.inputHighLimit = inputHighLimitVector;
+		this.inputLowLimit = inputLowLimitVector;
 		
-		double[] previousErrorVectorValues = new double[numInputs];
+		this.setpointVector = setpointVector;
+		this.setpointHighLimit = setpointHighLimitVector;
+		this.setpointLowLimit = setpointLowLimitVector;
+		
+		this.outputVector = outputVector;
+		this.outputHighLimit = outputHighLimitVector;
+		this.outputLowLimit = outputLowLimitVector;
+		
+	
+		double[] previousErrorVectorValues = new double[inputVector.length];
 		Arrays.fill(previousErrorVectorValues, 0D);
 		this.previousErrorVector = new ArrayRealVector(previousErrorVectorValues,false);
 		
-		double[] integralVectorValues = new double[numInputs];
+		double[] integralVectorValues = new double[inputVector.length];
 		Arrays.fill(integralVectorValues, 0D);
 		this.integralVector = new ArrayRealVector(integralVectorValues,false);
 
-		double[] derivativeVectorValues = new double[numInputs];
+		double[] derivativeVectorValues = new double[inputVector.length];
 		Arrays.fill(derivativeVectorValues, 0D);
 		this.derivativeVector = new ArrayRealVector(derivativeVectorValues,false);
 		
@@ -80,6 +100,15 @@ public class PidControlAlgorithmRT extends ControlToolboxControlAlgorithmRT{
 	 */
 	@Override
 	public void setSetpoint(double[] setpointVector) {
+		
+		//Trim the setpoint
+		for(int i=0; i<this.setpointVector.length; i++){
+			if(setpointVector[i] > this.setpointHighLimit[i])
+				setpointVector[i] = this.setpointHighLimit[i];
+			else if(setpointVector[i] < this.setpointLowLimit[i])
+				setpointVector[i] = this.setpointLowLimit[i];
+		}
+		
 		this.setpointVector = setpointVector;
 		
 	}
@@ -90,18 +119,12 @@ public class PidControlAlgorithmRT extends ControlToolboxControlAlgorithmRT{
 	@Override
 	public void setInput(double[] inputVector) {
 		//Trim the input
-		if(this.inputHighLimit != null){
-			for(int i=0; i<this.inputHighLimit.length; i++)
-				if(inputVector[i] > this.inputHighLimit[i])
-					inputVector[i] = this.inputHighLimit[i];
+		for(int i=0; i<this.inputVector.length; i++){
+			if(inputVector[i] > this.inputHighLimit[i])
+				inputVector[i] = this.inputHighLimit[i];
+			if(inputVector[i] < this.inputLowLimit[i])
+				inputVector[i] = this.inputLowLimit[i];
 		}
-		
-		if(this.inputLowLimit != null){
-			for(int i=0; i<this.inputLowLimit.length; i++)
-				if(inputVector[i] < this.inputLowLimit[i])
-					inputVector[i] = this.inputLowLimit[i];
-		}
-
 		this.inputVector = inputVector;
 		
 	}
@@ -113,17 +136,11 @@ public class PidControlAlgorithmRT extends ControlToolboxControlAlgorithmRT{
 	public double[] getOutput() {
 		
 		//Trim the output (assume lengths are ok)
-		
-		if(this.outputHighLimit != null){
-			for(int i=0; i<this.outputHighLimit.length; i++)
-				if(this.outputVector[i] > this.outputHighLimit[i])
-					this.outputVector[i] = this.outputHighLimit[i];
-		}
-		
-		if(this.outputLowLimit != null){
-			for(int i=0; i<this.outputLowLimit.length; i++)
-				if(this.outputVector[i] < this.outputLowLimit[i])
-					this.outputVector[i] = this.outputLowLimit[i];
+		for(int i=0; i<this.outputVector.length; i++){
+			if(this.outputVector[i] > this.outputHighLimit[i])
+				this.outputVector[i] = this.outputHighLimit[i];
+			if(this.outputVector[i] < this.outputLowLimit[i])
+				this.outputVector[i] = this.outputLowLimit[i];
 		}
 		
 		return this.outputVector;

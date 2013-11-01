@@ -14,10 +14,8 @@ import java.util.Map;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.jdbc.core.RowMapper;
 
-import com.plushpay.mango.controltoolbox.ControlToolboxControllerAuditEventTypeDefinition;
 import com.plushpay.mango.controltoolbox.ControlToolboxPointAuditEventTypeDefinition;
 import com.plushpay.mango.controltoolbox.db.SchemaDefinition;
-import com.plushpay.mango.controltoolbox.vo.ControlToolboxControllerVO;
 import com.plushpay.mango.controltoolbox.vo.ControlToolboxPointVO;
 import com.serotonin.m2m2.db.dao.AbstractDao;
 
@@ -63,7 +61,9 @@ public class ControlToolboxPointDao extends AbstractDao<ControlToolboxPointVO>{
 				vo.getPointType(),
 				vo.getDelay(),
 				vo.getDataPointId(),
-				vo.getControllerId()
+				vo.getControllerId(),
+				vo.getHighLimit(),
+				vo.getLowLimit()
 			};
 	}
 
@@ -96,7 +96,10 @@ public class ControlToolboxPointDao extends AbstractDao<ControlToolboxPointVO>{
                 "pointType",
                 "delay",
                 "dataPointId",
-                "controllerId"
+                "controllerId",
+                "highLimit",
+                "lowLimit"
+                
                 );
     }
 
@@ -135,6 +138,8 @@ public class ControlToolboxPointDao extends AbstractDao<ControlToolboxPointVO>{
             pt.setDelay(rs.getInt(++i));
             pt.setDataPointId(rs.getInt(++i));
             pt.setControllerId(rs.getInt(++i));
+            pt.setHighLimit(rs.getDouble(++i));
+            pt.setLowLimit(rs.getDouble(++i));
             return pt;
         }
     }

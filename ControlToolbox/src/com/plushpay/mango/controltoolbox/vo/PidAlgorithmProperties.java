@@ -17,7 +17,6 @@ import com.serotonin.json.spi.JsonProperty;
 import com.serotonin.json.type.JsonObject;
 import com.serotonin.m2m2.i18n.ProcessResult;
 import com.serotonin.m2m2.i18n.TranslatableMessage;
-import com.serotonin.util.SerializationHelper;
 
 /**
  * @author Terry Packer
@@ -37,8 +36,6 @@ public class PidAlgorithmProperties extends AlgorithmProperties<PidAlgorithmProp
 	private double i;
 	@JsonProperty 
 	private double d;
-	
-	
 	
 	
 	/* (non-Javadoc)
@@ -67,7 +64,6 @@ public class PidAlgorithmProperties extends AlgorithmProperties<PidAlgorithmProp
     /*
      * Serialization
      */
-    
     private static final int version = 1;
     
     public void writeObject(ObjectOutputStream out) throws IOException {
@@ -77,6 +73,7 @@ public class PidAlgorithmProperties extends AlgorithmProperties<PidAlgorithmProp
         out.writeDouble(p);
         out.writeDouble(i);
         out.writeDouble(d);
+        
     }
     
     public void readObject(ObjectInputStream in) throws IOException {
@@ -126,6 +123,8 @@ public class PidAlgorithmProperties extends AlgorithmProperties<PidAlgorithmProp
 	public void setD(double d) {
 		this.d = d;
 	}
+
+
 
 	/* (non-Javadoc)
 	 * @see com.serotonin.m2m2.util.ChangeComparable#getId()

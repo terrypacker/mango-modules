@@ -27,17 +27,23 @@
   <div class="formField"><div id="pointEnabled"></div></div></div>
   
   <div class="formItem">
-    <label class="formLabelRequired" for="pointTypePicker"><fmt:message key="neuralnet.point.properties.pointType"/></label>
+    <label class="formLabelRequired" for="pointTypePicker"><fmt:message key="controltoolbox.point.properties.pointType"/></label>
     <div class="formField">
       <div id="pointTypePicker"></div>
     </div>
   </div>
   
-  <div class="formItem"><label class="formLabelRequired" for="pointDelay"><fmt:message key="neuralnet.point.properties.delay"/></label>
+  <div class="formItem"><label class="formLabelRequired" for="pointDelay"><fmt:message key="controltoolbox.point.properties.delay"/></label>
   <div class="formField"><div id="pointDelay"></div></div></div>
+
+  <div class="formItem"><label class="formLabelRequired" for="pointHighLimit"><fmt:message key="controltoolbox.point.properties.highLimit"/></label>
+  <div class="formField"><div id="pointHighLimit"></div></div></div>
+  <div class="formItem"><label class="formLabelRequired" for="pointLowLimit"><fmt:message key="controltoolbox.point.properties.lowLimit"/></label>
+  <div class="formField"><div id="pointLowLimit"></div></div></div>
+
   
   <div class="formItem">
-    <label class="formLabelRequired" for="pointPicker"><fmt:message key="neuralnet.point.properties.dataPointId"/></label>
+    <label class="formLabelRequired" for="pointPicker"><fmt:message key="controltoolbox.point.properties.dataPointId"/></label>
     <div class="formField">
       <div id="pointPicker"></div>
     </div>

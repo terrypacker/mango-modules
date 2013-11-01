@@ -3,6 +3,6 @@
 --  @author Terry Packer
 --
 
-drop table neuralLayers;
-drop table neuralPoints;
-drop table neuralNetworks;
+drop table controlAlgorithms;
+drop table controlPoints;
+drop table controlControllers;

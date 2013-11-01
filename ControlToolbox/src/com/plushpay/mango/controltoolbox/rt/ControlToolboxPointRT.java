@@ -78,6 +78,7 @@ public class ControlToolboxPointRT {
 		return this.currentValue;
 	}
 	
+	
 	/**
 	 * Used for preparing an input to the network
 	 * @return

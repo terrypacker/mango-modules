@@ -35,7 +35,9 @@ import com.serotonin.util.SerializationHelper;
  */
 public class ControlToolboxPointVO extends AbstractActionVO<ControlToolboxPointVO>{
 
-
+	private static final double MIN_VALUE = -1.79769E+308; //DERBY DOESN't SUPPORT Double.MIN_VALUE; Gay
+	private static final double MAX_VALUE = 1.79769E+308; //DERBY Doesn't support Double.MAX_VALUE; Gay
+	
 	public static final int INPUT_TYPE = 1;
 	public static final int OUTPUT_TYPE = 2;
 	public static final int SETPOINT_TYPE = 3;
@@ -69,6 +71,10 @@ public class ControlToolboxPointVO extends AbstractActionVO<ControlToolboxPointV
     private int controllerId; //The Controller Id
     @JsonProperty
     private int delay; //The delay used to offset a point in time
+	@JsonProperty
+	private double highLimit = MAX_VALUE;  //Maximum limit for input/output value (will be trimmed to this)
+	@JsonProperty
+	private double lowLimit =  MIN_VALUE; //Minimum limit for input/output value (will be trimmed to this)
     
 	
 	/* (non-Javadoc)
@@ -144,6 +150,16 @@ public class ControlToolboxPointVO extends AbstractActionVO<ControlToolboxPointV
         }
         if(delay < 0)
         	response.addContextualMessage("delay","validate.invalidValue");
+
+    	if(highLimit <= lowLimit){
+    		response.addContextualMessage("highLimit","validate.invalidValue");
+    		response.addContextualMessage("lowLimit","validate.invalidValue");
+    	}
+    	if(highLimit > MAX_VALUE)
+    		response.addContextualMessage("highLimit","validate.invalidValue");
+    	if(lowLimit < MIN_VALUE)
+    		response.addContextualMessage("lowLimit","validate.invalidValue");
+        
     }
 
     /* (non-Javadoc)
@@ -158,6 +174,8 @@ public class ControlToolboxPointVO extends AbstractActionVO<ControlToolboxPointV
         AuditEventType.addPropertyMessage(list, "controltoolbox.point.properties.networkId",
                 ControlToolboxControllerDao.instance.get(controllerId).getName());
         AuditEventType.addPropertyMessage(list, "controltoolbox.point.properties.delay", delay);
+        AuditEventType.addPropertyMessage(list, "controltoolbox.point.properties.highLimit", highLimit);
+        AuditEventType.addPropertyMessage(list, "controltoolbox.point.properties.lowLimit", lowLimit);
     }
 
     /* (non-Javadoc)
@@ -176,6 +194,8 @@ public class ControlToolboxPointVO extends AbstractActionVO<ControlToolboxPointV
                 ControlToolboxControllerDao.instance.get(controllerId).getName());
         
         AuditEventType.maybeAddPropertyChangeMessage(list, "controltoolbox.point.properties.delay", from.delay, delay);
+        AuditEventType.maybeAddPropertyChangeMessage(list, "controltoolbox.point.properties.highLimit", from.highLimit, highLimit);
+        AuditEventType.maybeAddPropertyChangeMessage(list, "controltoolbox.point.properties.lowLimit", from.lowLimit, lowLimit);
     }
 
     
@@ -194,6 +214,8 @@ public class ControlToolboxPointVO extends AbstractActionVO<ControlToolboxPointV
         out.writeInt(dataPointId);
         out.writeInt(controllerId);
         out.writeInt(delay);
+        out.writeDouble(highLimit);
+        out.writeDouble(lowLimit);
     }
     
     private void readObject(ObjectInputStream in) throws IOException {
@@ -207,6 +229,8 @@ public class ControlToolboxPointVO extends AbstractActionVO<ControlToolboxPointV
             dataPointId = in.readInt();
             controllerId = in.readInt();
             delay = in.readInt();
+            highLimit = in.readDouble();
+            lowLimit = in.readDouble();
         }
         else {
             throw new ShouldNeverHappenException("Unknown serialization version.");
@@ -240,6 +264,18 @@ public class ControlToolboxPointVO extends AbstractActionVO<ControlToolboxPointV
 	}
 	public void setDelay(int delay) {
 		this.delay = delay;
+	}
+	public double getHighLimit() {
+		return highLimit;
+	}
+	public void setHighLimit(double highLimit) {
+		this.highLimit = highLimit;
+	}
+	public double getLowLimit() {
+		return lowLimit;
+	}
+	public void setLowLimit(double lowLimit) {
+		this.lowLimit = lowLimit;
 	}
 
 	/* JSP Helpers */

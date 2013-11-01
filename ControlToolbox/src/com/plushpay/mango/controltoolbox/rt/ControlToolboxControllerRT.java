@@ -53,7 +53,18 @@ public class ControlToolboxControllerRT extends AbstractRT<ControlToolboxControl
     //The brain
     private ControlToolboxControlAlgorithmRT algorithm;
     private double[] inputVector; //Referenceable vector of the inputs
+    private double[] inputHighLimitVector; //Referenceable vector of the inputs
+    private double[] inputLowLimitVector; //Referenceable vector of the inputs
+
     private double[] setpointVector; //Referenceable vector of the setpoints
+    private double[] setpointHighLimitVector; //Referenceable vector of the setpoints
+    private double[] setpointLowLimitVector; //Referenceable vector of the setpoints
+    
+    private double[] outputVector; //Referenceable vector of the outputs
+    private double[] outputHighLimitVector; //Referenceable vector of the output limits
+    private double[] outputLowLimitVector; //Referenceable vector of the output limits
+    
+    
     private Object lock = new Object(); //To lock algorithm on input change
     
     private Map<Integer,ControlToolboxPointRT> outputPointMap; //Map of output array index to points
@@ -108,7 +119,11 @@ public class ControlToolboxControllerRT extends AbstractRT<ControlToolboxControl
 			switch(algorithm.getAlgorithmType()){
 				case ControlToolboxAlgorithmVO.PID_TYPE:
 					PidAlgorithmProperties props = (PidAlgorithmProperties)algorithm.getProperties();
-					this.algorithm = new PidControlAlgorithmRT(this.inputPointMap.size(), this.setpointMap.size(), this.outputPointMap.size(),props.getP(), props.getI(), props.getD(),props.getSamplePeriod());
+					this.algorithm = new PidControlAlgorithmRT(
+							this.inputVector, this.inputHighLimitVector, this.inputLowLimitVector,
+							this.setpointVector, this.setpointHighLimitVector, this.setpointLowLimitVector, 
+							this.outputVector, this.outputHighLimitVector, this.outputLowLimitVector, 
+							props.getP(), props.getI(), props.getD(),props.getSamplePeriod());
 				break;
 			}
 		}else{
@@ -127,11 +142,15 @@ public class ControlToolboxControllerRT extends AbstractRT<ControlToolboxControl
 		List<ControlToolboxPointVO> setPoints = ControlToolboxPointDao.instance.getControllerPoints(ControlToolboxPointVO.SETPOINT_TYPE,this.vo.getId());
 		
 		setpointVector = new double[setPoints.size()];
+		setpointHighLimitVector = new double[setPoints.size()];
+		setpointLowLimitVector = new double[setPoints.size()];
 		int setpointVectorIndex = 0;
 		setpointMap = new HashMap<Integer,ControlToolboxPointRT>();
 		for(ControlToolboxPointVO point : setPoints){
 			safeGetPoint(point.getDataPointId()); //Ensure the point is enabled
 			ControlToolboxPointRT rt = new ControlToolboxPointRT(point,setpointVectorIndex);
+			setpointHighLimitVector[setpointVectorIndex] = point.getHighLimit();
+			setpointLowLimitVector[setpointVectorIndex] = point.getLowLimit();
 			setpointMap.put(setpointVectorIndex, rt);
 			ControlToolboxInputPointListener listener = new ControlToolboxInputPointListener(this,rt);
 			setpointListeners.add(listener);			
@@ -144,11 +163,16 @@ public class ControlToolboxControllerRT extends AbstractRT<ControlToolboxControl
 		List<ControlToolboxPointVO> inputPoints = ControlToolboxPointDao.instance.getControllerPoints(ControlToolboxPointVO.INPUT_TYPE,this.vo.getId());
 		
 		inputVector = new double[inputPoints.size()];
+		inputHighLimitVector = new double[inputPoints.size()];
+		inputLowLimitVector = new double[inputPoints.size()];
+
 		int inputVectorIndex = 0;
 		inputPointMap = new HashMap<Integer,ControlToolboxPointRT>();
 		for(ControlToolboxPointVO point : inputPoints){
 			safeGetPoint(point.getDataPointId()); //Ensure the point is enabled
 			ControlToolboxPointRT rt = new ControlToolboxPointRT(point,inputVectorIndex);
+			inputHighLimitVector[inputVectorIndex] = point.getHighLimit();
+			inputLowLimitVector[inputVectorIndex] = point.getLowLimit();
 			inputPointMap.put(inputVectorIndex, rt);
 			ControlToolboxInputPointListener listener = new ControlToolboxInputPointListener(this,rt);
 			listeners.add(listener);			
@@ -161,14 +185,25 @@ public class ControlToolboxControllerRT extends AbstractRT<ControlToolboxControl
 		
 	}
 	
+	/**
+	 * 
+	 * @throws DataPointException
+	 */
 	private void configureOutputPoints() throws DataPointException{
 		//Setup the Output Map
 		List<ControlToolboxPointVO> points = ControlToolboxPointDao.instance.getControllerPoints(ControlToolboxPointVO.OUTPUT_TYPE,this.vo.getId());
+		
+		outputVector = new double[points.size()];
+		outputHighLimitVector = new double[points.size()];
+		outputLowLimitVector = new double[points.size()];
+
 		int vectorIndex = 0;
 		outputPointMap = new HashMap<Integer,ControlToolboxPointRT>();
 		for(ControlToolboxPointVO point : points){
 			safeGetPoint(point.getDataPointId()); //Ensure the point is enabled
 			ControlToolboxPointRT rt = new ControlToolboxPointRT(point,vectorIndex);
+			outputHighLimitVector[vectorIndex] = point.getHighLimit();
+			outputLowLimitVector[vectorIndex] = point.getLowLimit();
 			outputPointMap.put(vectorIndex,rt);
 			vectorIndex++;
 		}

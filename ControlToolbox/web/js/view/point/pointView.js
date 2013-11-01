@@ -41,9 +41,13 @@ points = new StoreView({
         this.name.set('value', vo.name);
         this.xid.set('value', vo.xid);
         this.enabled.set('value', vo.enabled);
-
-        this.pointType.set('value',vo.pointType);
+        
+        this.pointType.set('value', vo.pointType);
         this.delay.set('value',vo.delay);
+        this.highLimit.set('value', vo.highLimit);
+        this.lowLimit.set('value', vo.lowLimit);
+        
+        
         if(vo.dataPointId > 0)
         	this.dataPoint.set('value',vo.dataPointId);
         else
@@ -54,7 +58,6 @@ points = new StoreView({
         	this.controller.set('value',vo.controllerId);
         else
         	this.controller.reset();
-        
         
     },
     
@@ -70,6 +73,9 @@ points = new StoreView({
         
         vo.pointType = this.pointType.get('value');
         vo.delay = this.delay.get('value');
+        vo.highLimit = this.highLimit.get('value');
+        vo.lowLimit = this.lowLimit.get('value');
+        
        	vo.dataPointId = this.dataPoint.get('value');
        	vo.controllerId = this.controller.get('value');
 
@@ -83,6 +89,9 @@ points = new StoreView({
     
     pointType: null,
     delay: new ValidationTextBox({},"pointDelay"),
+    highLimit: new ValidationTextBox({},"pointHighLimit"),
+    lowLimit: new ValidationTextBox({},"pointLowLimit"),
+    
     dataPoint: new FilteringSelect({
         store: stores.allDataPoints.cache
     }, "pointPicker"),

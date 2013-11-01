@@ -3,10 +3,14 @@
     @author Terry Packer
 --%>
 <%@ include file="/WEB-INF/jsp/include/tech.jsp" %>
+
+<c:choose>
+   <c:when test="${param.type == 1 }">
+<!--  PID Algorithm -->
 <script type="text/javascript" src="${modulePath}/web/js/view/algorithm/properties/pidAlgorithmProperties.js"></script>
 
 <!-- Edit Div -->
-<div id="editPidAlgorithmPropertiesDiv" class="borderDiv marB marR">
+<div id="editPidAlgorithmPropertiesDiv">
 
 
   <div class="formItem"><label class="formLabelRequired" for="samplePeriod"><fmt:message key="controltoolbox.algorithm.properties.samplePeriod"/></label>
@@ -23,3 +27,8 @@
   
 
 </div>
+   </c:when>
+   <c:otherwise>
+      Page not found.
+   </c:otherwise>
+</c:choose>

@@ -21,7 +21,9 @@ create table controlPoints (
   pointType int not null,
   delay int not null,
   dataPointId int not null,
-  controllerId int not null
+  controllerId int not null,
+  highLimit double not null,
+  lowLimit double not null
 );
 
 alter table controlPoints add constraint controlPointsPk primary key(id);
