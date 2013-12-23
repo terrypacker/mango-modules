@@ -6,24 +6,19 @@
 
 <doxManifest>
 
-  <item id="neural-network-help" key="neuralnet.dox.network.help" filename="network.htm">
-    <relation id="neural-hiddenLayer-help"/>
-    <relation id="neural-transferFunction-help"/>
-    <relation id="neural-point-help"/>
+  <item id="control-controller-help" key="controltoolbox.dox.controller.help" filename="controller.htm">
+    <relation id="control-point-help"/>
+    <relation id="control-algorithm-help"/>
   </item> 
 
-  <item id="neural-hiddenLayer-help" key="neuralnet.dox.hiddenLayer.help" filename="hiddenLayer.htm">
-    <relation id="neural-network-help"/>
-    <relation id="neural-point-help"/>
+  <item id="control-algorithm-help" key="controltoolbox.dox.algorithm.help" filename="algorithm.htm">
+    <relation id="control-point-help"/>
+    <relation id="control-controller-help"/>
   </item> 
 
-  <item id="neural-transferFunction-help" key="neuralnet.dox.transferFunction.help" filename="transferFunction.htm">
-    <relation id="neural-network-help"/>
-  </item> 
-
-  <item id="neural-point-help" key="neuralnet.dox.point.help" filename="point.htm">
-    <relation id="neural-network-help"/>
-    <relation id="neural-hiddenLayer-help"/>
+  <item id="control-point-help" key="control.dox.point.help" filename="point.htm">
+    <relation id="control-algorithm-help"/>
+    <relation id="control-controller-help"/>
   </item> 
 
 </doxManifest>

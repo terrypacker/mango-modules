@@ -1,0 +1,21 @@
+<h1>Control Point</h1>
+
+Control points can be Inputs, Outputs or Set Points. All point types interact with a Mango point in some way.
+
+<b>Inputs</b> are used to drive the Controller be recieving data from the real world.  Read type data points are useful for Control Input points.
+
+<b>Outputs</b> are used to return the control output to the real world. Write type data points are required for Control Output points.
+
+<b>Set Points</b> are used to 
+
+
+All data points have the following settings:
+<ul>
+    <li>Enabled - if the point is used in the controller</li>
+    <li>Point Type - see above </li>
+    <li>Delay - how many sample periods should the values for this point be offset to the others</li>
+    <li>High Limit - highest possible value (for outputs)</li>
+    <li>Low Limit - lowest possible value (for outputs)</li>
+    <li>Data Point - the Mango data point that is used</li>
+    <li>Controller - the controller that uses this point</li>
+</ul>

@@ -41,8 +41,9 @@ public class ControlToolboxInputPointListener implements DataPointListener{
 	 */
 	@Override
 	public void pointUpdated(PointValueTime newValue) {
-		//TODO May want to listen to this for the controller
-		
+		//Called anytime a value is written to the point
+		rt.updatePoint(newValue);
+		this.controller.updateInputs(rt);
 	}
 
 	/* (non-Javadoc)
@@ -51,8 +52,7 @@ public class ControlToolboxInputPointListener implements DataPointListener{
 	@Override
 	public void pointChanged(PointValueTime oldValue, PointValueTime newValue) {
 		//Only called when value changes
-		rt.updatePoint(newValue);
-		this.controller.updateInputs(rt);
+		
 	}
 
 	/* (non-Javadoc)

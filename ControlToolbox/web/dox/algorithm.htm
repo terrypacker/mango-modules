@@ -1,0 +1,24 @@
+
+<h1>Algorithms</h1>
+Understanding the timing for the module is important and will be described here.  
+Anytime one of the Controller Point's values is set the event is counted, the control loop is only executed after the configured "Sample Periods" are counted.
+
+This means that the controller is not running its own poll for the data, it is event driven by changes on the inputs.  It is the user's responsibility to ensure 
+that the input events are periodic enough to get the Control response desired.
+
+
+Currently only the PID algorithm is available.
+
+Before creating a Controller you must configure an Algorithm for the Controller to use.
+
+<b>PID</b>
+A PID control loop has 4 parameters:
+
+<ul>
+    <li>Sample Period is the number of value changes of the inputs to wait before executing the loop.</li>
+    <li></li>
+    <li></li>
+    <li></li>
+</ul>
+
+

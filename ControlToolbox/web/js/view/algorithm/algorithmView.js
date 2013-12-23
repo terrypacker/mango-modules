@@ -60,7 +60,7 @@ algorithms = new StoreView({
     },
     
     getInputs: function() {
-        var vo = new NeuralNetNetworkVO();
+        var vo = new ControlToolboxAlgorithmVO();
         vo.id = this.currentId;
         vo.name = this.name.get('value');
         vo.xid = this.xid.get('value');
