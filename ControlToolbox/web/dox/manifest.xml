@@ -6,19 +6,24 @@
 
 <doxManifest>
 
-  <item id="control-controller-help" key="controltoolbox.dox.controller.help" filename="controller.htm">
-    <relation id="control-point-help"/>
-    <relation id="control-algorithm-help"/>
+  <item id="controlControllerHelp" key="controltoolbox.dox.controller.help" filename="controller.htm">
+    <relation id="controlPointHelp"/>
+    <relation id="controlAlgorithmHelp"/>
   </item> 
 
-  <item id="control-algorithm-help" key="controltoolbox.dox.algorithm.help" filename="algorithm.htm">
-    <relation id="control-point-help"/>
-    <relation id="control-controller-help"/>
+  <item id="controlAlgorithmHelp" key="controltoolbox.dox.algorithm.help" filename="algorithm.htm">
+    <relation id="controlPointHelp"/>
+    <relation id="controlControllerHelp"/>
+    <relation id="controlAlgorithmTypeHelp"/>
   </item> 
 
-  <item id="control-point-help" key="control.dox.point.help" filename="point.htm">
-    <relation id="control-algorithm-help"/>
-    <relation id="control-controller-help"/>
+  <item id="controlAlgorithmTypeHelp" key="controltoolbox.dox.algorithmType.help" filename="algorithmType.htm">
+    <relation id="controlAlgorithmHelp"/>
+  </item> 
+
+  <item id="controlPointHelp" key="controltoolbox.dox.point.help" filename="point.htm">
+    <relation id="controlAlgorithmHelp"/>
+    <relation id="controlControllerHelp"/>
   </item> 
 
 </doxManifest>

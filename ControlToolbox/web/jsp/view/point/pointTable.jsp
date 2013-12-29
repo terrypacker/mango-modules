@@ -8,7 +8,7 @@
 <div id="pointDiv" class="borderDivPadded marB" >
   <tag:img png="icon_ds" title="dsList.dataSources"/>
   <span class="smallTitle"><fmt:message key="controltoolbox.edit.configuredPoints"/></span>
-  <tag:help id="control-point-help"/>
+  <tag:help id="controlPointHelp"/>
 
   <div id="pointTable"></div>
 

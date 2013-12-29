@@ -9,7 +9,7 @@
   <div style="float:left">
     <tag:img src="${modulePath}/web/img/pid_loop.png" title="common.edit" />
     <span class="smallTitle"><fmt:message key="controltoolbox.algorithm.description"/></span>
-    <tag:help id="control-algorithm-help"/>
+    <tag:help id="controlAlgorithmHelp"/>
   </div>
   
   <div style="float:right">
@@ -26,7 +26,7 @@
   <div class="formItem">
     <label class="formLabelRequired" for="algorithmTypePicker"><fmt:message key="controltoolbox.algorithm.properties.algorithmType"/></label>
     <div class="formField">
-      <div id="algorithmTypePicker"></div><tag:help id="control-algorithm-help"/>
+      <div id="algorithmTypePicker"></div><tag:help id="controlAlgorithmTypeHelp"/>
     </div>
   </div>
   

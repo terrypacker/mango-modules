@@ -8,7 +8,7 @@
 <div id="algorithmDiv" class="borderDivPadded marB" >
   <tag:img png="icon_ds" title="dsList.dataSources"/>
   <span class="smallTitle"><fmt:message key="controltoolbox.edit.configuredAlgorithms"/></span>
-  <tag:help id="control-algorithm-help"/>
+  <tag:help id="controlAlgorithmHelp"/>
 
   <div id="algorithmTable"></div>
 

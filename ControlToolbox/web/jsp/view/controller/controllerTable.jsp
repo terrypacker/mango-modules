@@ -8,7 +8,7 @@
 <div id="controllerDiv" class="borderDivPadded marB" >
   <tag:img png="icon_ds" title="dsList.dataSources"/>
   <span class="smallTitle"><fmt:message key="controltoolbox.edit.configuredControllers"/></span>
-  <tag:help id="control-controller-help"/>
+  <tag:help id="controlControllerHelp"/>
 
   <div id="controllerTable"></div>
 

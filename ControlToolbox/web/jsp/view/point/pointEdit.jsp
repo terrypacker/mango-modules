@@ -9,7 +9,7 @@
   <div style="float:left">
     <tag:img src="${modulePath}/web/img/pid_loop.png" title="common.edit" />
     <span class="smallTitle"><fmt:message key="controltoolbox.point.description"/></span>
-    <tag:help id="control-point-help"/>
+    <tag:help id="controlPointHelp"/>
   </div>
   
   <div style="float:right">
