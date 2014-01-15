@@ -262,7 +262,7 @@ public class ControlToolboxControllerRT extends AbstractRT<ControlToolboxControl
 	 * @throws DataPointException 
 	 */
 	private void addDataPointListeners() throws DataPointException {
-		PointValueDao dao = new PointValueDao();
+		PointValueDao dao = Common.databaseProxy.newPointValueDao();
 		
 		//Configure the setpoints
 		for(ControlToolboxInputPointListener listener : this.setpointListeners){

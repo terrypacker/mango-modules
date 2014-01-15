@@ -13,7 +13,7 @@ import com.serotonin.web.taglib.Functions;
  *
  */
 public class ControlToolboxSystemEventTypeDefinition extends SystemEventTypeDefinition {
-    public static final String TYPE_NAME = "NEURAL_NET";
+    public static final String TYPE_NAME = "CTRTB";
 
     @Override
     public String getTypeName() {
@@ -22,13 +22,13 @@ public class ControlToolboxSystemEventTypeDefinition extends SystemEventTypeDefi
 
     @Override
     public String getDescriptionKey() {
-        return "neuralnet.event.system.name";
+        return "controltoolbox.event.system.name";
     }
 
     @Override
     public String getEventListLink(int ref1, int ref2, Translations translations) {
         //TODO Fix this link when we code up the process UI
-        String alt = Functions.quotEncode(translations.translate("neural.event.system"));
+        String alt = Functions.quotEncode(translations.translate("controltoolbox.event.system"));
         StringBuilder sb = new StringBuilder();
         sb.append("<a href='home.shtm?nnid=");
         sb.append(ref1);

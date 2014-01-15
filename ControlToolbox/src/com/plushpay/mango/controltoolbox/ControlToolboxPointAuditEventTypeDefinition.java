@@ -15,7 +15,7 @@ import com.serotonin.web.taglib.Functions;
 public class ControlToolboxPointAuditEventTypeDefinition extends AuditEventTypeDefinition{
 
 	
-    public static final String TYPE_NAME = "NN_POINT";
+    public static final String TYPE_NAME = "CTRTB_POINT";
 
     @Override
     public String getTypeName() {
@@ -24,7 +24,7 @@ public class ControlToolboxPointAuditEventTypeDefinition extends AuditEventTypeD
 
     @Override
     public String getDescriptionKey() {
-        return "neuralnet.event.audit.point.name";
+        return "controltoolbox.event.audit.point.name";
     }
 
     @Override
