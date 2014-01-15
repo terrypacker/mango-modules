@@ -257,7 +257,7 @@ public class NeuralNetNetworkRT extends AbstractRT<NeuralNetNetworkVO> implement
 	 * @throws DataPointException 
 	 */
 	private void addDataPointListeners() throws DataPointException {
-		PointValueDao dao = new PointValueDao();
+		PointValueDao dao = Common.databaseProxy.newPointValueDao();
 		for(NeuralNetInputPointListener listener : this.listeners){
 			//TODO Could speed this up by only grabbing a list for a given point once
 			// for systems with a huge delay you will be grabbing one list per point

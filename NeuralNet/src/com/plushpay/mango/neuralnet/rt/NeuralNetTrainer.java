@@ -23,6 +23,7 @@ import org.neuroph.nnet.learning.BackPropagation;
 
 import com.plushpay.mango.neuralnet.vo.NeuralNetNetworkVO;
 import com.serotonin.db.MappedRowCallback;
+import com.serotonin.m2m2.Common;
 import com.serotonin.m2m2.db.dao.PointValueDao;
 import com.serotonin.m2m2.rt.dataImage.IdPointValueTime;
 
@@ -98,7 +99,7 @@ public class NeuralNetTrainer implements LearningEventListener{
 		}
 		
 		//We need to sort the data into rows of inputs and outputs matched by timestamp
-		PointValueDao dao = new PointValueDao();
+		PointValueDao dao = Common.databaseProxy.newPointValueDao();
 	
 		//Values for use inside the callback
 		final double[] inputs = new double[inputPointMap.size()];
