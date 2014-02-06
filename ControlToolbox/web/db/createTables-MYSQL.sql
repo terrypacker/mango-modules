@@ -17,7 +17,7 @@ create table neuralNetworks (
   learningMaxIterations int not null,
   trainingPeriodStart bigint not null,
   trainingPeriodEnd bigint not null,
-  properties varchar(200) not null
+  properties varchar(200) not null,
   primary key (id)
 ) engine=InnoDB;
 
