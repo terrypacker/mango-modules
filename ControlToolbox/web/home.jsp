@@ -14,8 +14,19 @@
     <script type="text/javascript" src="${modulePath}/web/js/view/controller/controllerView.js"></script>
     <script type="text/javascript" src="${modulePath}/web/js/view/point/pointView.js"></script>
     <script type="text/javascript" src="${modulePath}/web/js/view/algorithm/algorithmView.js"></script>
+    <script type="text/javascript" src="${modulePath}/web/js/view/controltoolbox.js"></script>
 
+
+       
+   <div id="controlToolboxTabContainer" >
+   
+       <div id="controlTab">
+        <jsp:include page="jsp/view/controller/controllerTable.jsp"/>
+       </div>
+       <div id="signalProcessingTab">
+        <jsp:include page="jsp/view/signal/signalProcessor.jsp"/>
+       </div>
+   </div>
     
     
-    <jsp:include page="jsp/view/controller/controllerTable.jsp"/>
 </tag:page>
