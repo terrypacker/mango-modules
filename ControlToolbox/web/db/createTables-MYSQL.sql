@@ -6,24 +6,19 @@
 -- Make sure that everything get created with utf8 as the charset.
 alter database default character set utf8;
 
-create table neuralNetworks (
+create table controlControllers (
   id int not null auto_increment,
   xid varchar(50) not null,
   enabled char(1) not null,
   name varchar(40) not null,
-  transferFunctionType int not null,
-  learningRate double not null,
-  maxError double not null,
-  learningMaxIterations int not null,
-  trainingPeriodStart bigint not null,
-  trainingPeriodEnd bigint not null,
-  properties varchar(200) not null,
+  algorithmId int not null,
   primary key (id)
-) engine=InnoDB;
+)engine=InnoDB;
 
-alter table neuralNetworks add constraint neuralNetworksUn1 unique (xid);
+alter table controlControllers add constraint controlControllersUn1 unique (xid);
 
-create table neuralPoints (
+
+create table controlPoints (
   id int not null auto_increment,
   xid varchar(50) not null,
   enabled char(1) not null,
@@ -31,25 +26,24 @@ create table neuralPoints (
   pointType int not null,
   delay int not null,
   dataPointId int not null,
-  trainingDataPointId int not null,
-  networkId int not null,
+  controllerId int not null,
+  highLimit double not null,
+  lowLimit double not null,
   primary key (id)
-) engine=InnoDB;
+)engine=InnoDB;
 
-alter table neuralPoints add constraint neuralPointsUn1 unique (xid);
-alter table neuralPoints add constraint neuralPointsFk1 foreign key (dataPointId) references dataPoints(id);
-alter table neuralPoints add constraint neuralPointsFk2 foreign key (networkId) references neuralNetworks(id);
+alter table controlPoints add constraint controlPointsUn1 unique (xid);
+alter table controlPoints add constraint controlPointsFk1 foreign key (dataPointId) references dataPoints(id);
+alter table controlPoints add constraint controlPointsFk2 foreign key (controllerId) references controlControllers(id);
 
-create table neuralHiddenLayers (
+create table controlAlgorithms (
   id int not null auto_increment,
   xid varchar(50) not null,
   name varchar(40) not null,
-  layerNumber int not null,
-  numberOfNeurons int not null,
-  networkId int not null,
-  primary key (id)
-) engine=InnoDB;
+  algorithmType int not null,
+  data blob not null,
+  primary key(id)
+)engine=InnoDB;
 
-alter table neuralHiddenLayers add constraint neuralHiddenLayersUn1 unique (xid);
-alter table neuralHiddenLayers add constraint neuralHiddenLayersFk2 foreign key (networkId) references neuralNetworks(id);
 
+alter table controlAlgorithms add constraint controlAlgorithmsUn1 unique (xid);
