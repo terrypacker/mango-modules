@@ -16,7 +16,8 @@ function(TabContainer, ContentPane) {
 		}, "controlTab");
 		
 		var cp2 = new ContentPane({
-			title: "Signal Processing"
+			title: "Signal Processing",
+			selected: true
 		}, "signalProcessingTab");
 		
 		tc.addChild(cp1);

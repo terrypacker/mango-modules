@@ -9,7 +9,7 @@
 
 <%@ include file="/WEB-INF/jsp/include/tech.jsp" %>
 
-<tag:page dwr="DataPointDwr,ControlToolboxControllerDwr,ControlToolboxPointDwr,ControlToolboxAlgorithmDwr">
+<tag:page dwr="DataPointDwr,ControlToolboxControllerDwr,ControlToolboxPointDwr,ControlToolboxAlgorithmDwr,SignalProcessingDwr">
     <script type="text/javascript" src="${modulePath}/web/js/stores.js"></script>
     <script type="text/javascript" src="${modulePath}/web/js/view/controller/controllerView.js"></script>
     <script type="text/javascript" src="${modulePath}/web/js/view/point/pointView.js"></script>
