@@ -18,6 +18,8 @@ public class SignalProcessingDwrConversionDefinition extends DwrConversionDefini
 	@Override
 	public void addConversions() {
 		this.addConversion(D3DataSeries.class, "bean");
+		this.addConversion(D3Value.class, "bean");
+		this.addConversion(D3TimeDataSeries.class, "bean");
 		this.addConversion(D3TimeValue.class,"bean");
 	}
 

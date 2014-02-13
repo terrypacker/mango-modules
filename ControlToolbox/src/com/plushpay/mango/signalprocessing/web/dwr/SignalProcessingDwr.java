@@ -36,34 +36,63 @@ public class SignalProcessingDwr extends ModuleDwr{
 		List<PointValueTime> signal = pvDao.getLatestPointValues(dataPointId, windowSize);
 		
 		Transform t = new Transform( new DiscreteFourierTransform());
-		double[] arrTime = new double[signal.size()];
+		double[] arrTime = new double[signal.size()*2];
 		
-		List<D3DataSeries> signalSeriesList = new ArrayList<D3DataSeries>();
+		List<D3TimeDataSeries> signalSeriesList = new ArrayList<D3TimeDataSeries>();
 		D3TimeValue[] signalValues = new D3TimeValue[signal.size()];
 		
 		int i=0;
+		int k=0;
+		double avgSamplePeriod = 0.0;
+		Long lastSampleTime = null;
 		for(PointValueTime value : signal){
-			arrTime[i] = value.getDoubleValue();
+			arrTime[k++] = value.getDoubleValue();
+			arrTime[k++] = 0; //Complex portion unknown
 			signalValues[i++] = new D3TimeValue(value.getTime(),value.getDoubleValue());
 			
+			if(lastSampleTime != null){
+				avgSamplePeriod = avgSamplePeriod + (lastSampleTime - value.getTime());
+				lastSampleTime = value.getTime();
+			}else{
+				lastSampleTime = value.getTime();
+			}
 		}
+		
+		//Compute the sample Frequ
+		avgSamplePeriod = (avgSamplePeriod/1000)/signal.size();
+		double sampleFreq = 1/avgSamplePeriod;
+		
 		double[] fft = t.forward(arrTime);
 		
-		D3DataSeries series = new D3DataSeries("Signal","#2ca02c",signalValues);
+		
+		D3TimeDataSeries series = new D3TimeDataSeries("Signal","#2ca02c",signalValues);
 		signalSeriesList.add(series);
 		result.addData("signal", signalSeriesList);
 		
 		//Create the FFT Series
 		List<D3DataSeries> fftSeriesList = new ArrayList<D3DataSeries>();
-		D3TimeValue[] fftValues = new D3TimeValue[fft.length];
-		i=0;
-		for(double d : fft){
-			fftValues[i] = new D3TimeValue(i,d);
-			i++;
+		D3Value[] fftValues = new D3Value[fft.length/2];
+		double maxValue = 0;
+		int maxValuePosition = 0;
+		double binFreq;
+		int fftHalfLength = fft.length/2;
+		for(int j=0; j<fftHalfLength; j++){
+			binFreq = ((double)(j)*(sampleFreq/(double)fft.length));
+			fftValues[j] = new D3Value(binFreq,Math.abs(fft[j]));
+			if(j>0){
+				//Search for max signal after DC Offset at fft[0]
+				if(maxValue < fft[j])
+					maxValue = fft[j];
+			}
 		}
 		D3DataSeries fftSeries = new D3DataSeries("FFT","ff7f0e",fftValues);
 		fftSeriesList.add(fftSeries);
 		result.addData("fft", fftSeriesList);
+		
+		
+		//Compute Max Frequency
+		double maxFrequency = 0.0; //(maxValuePosition*sampleFreq/2)/(fft.length/2)
+		result.addData("maxFrequency",maxFrequency);
 		
 		return result;
 	}

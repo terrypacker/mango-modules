@@ -24,6 +24,17 @@
 }
 </style>   
 
+<div style='borderDiv marB marR'>
+  <div class="formItem"><label class="formLabelRequired" for="signalPoint"><fmt:message key="common.point"/></label>
+  <div class="formField"><div id="signalPoint"></div></div></div>
+
+  <div class="formItem"><label class="formLabelRequired" for="signalLength"><fmt:message key="signal.signalLength"/></label>
+  <div class="formField"><div id="signalLength"></div></div></div>
+
+  <div class="formField"><div id="chartButton"></div></div>
+
+</div>
+
   <div id="signal" class='chart with-transitions borderDiv marB marR'>
     <strong>Signal (with-transitions)</strong>
     <svg></svg>

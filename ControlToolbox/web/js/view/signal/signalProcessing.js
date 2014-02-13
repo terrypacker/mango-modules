@@ -3,11 +3,46 @@
 //Load the data
 var signalData;
 var dftData;
+var signalProcessor;
 
-require(["dojo/domReady!"],
-   function() {
+//Run on page load
+require(["deltamation/StoreView", "dijit/form/CheckBox","dojo/store/Memory",
+         "dijit/form/FilteringSelect", "dijit/form/ValidationTextBox", "dijit/form/Button",
+         "dojo/domReady!"],
+function(StoreView, CheckBox, Memory, FilteringSelect, ValidationTextBox, Button) {
+	
+	
+	signalProcessor = {
+			dataPoint: new FilteringSelect({
+				store: stores.allDataPoints.cache,
+				labelAttr: 'extendedName'
+				}, "signalPoint"),
+				
+			signalLength: new ValidationTextBox({},"signalLength"),
+			
+			chartButton: new Button({
+				label: "Generate",
+				onClick: function(){
+					createGraphs(signalProcessor.dataPoint.get('value'),
+							signalProcessor.signalLength.get('value'));
+				}
+			},"chartButton"),
+	};
+	
+	
 
-	SignalProcessingDwr.dft(463,100,function(response){
+}); // require
+
+
+/**
+ * Create the Signal and DFT charts
+ * 
+ * @param pointId
+ * @param signalLength
+ */
+function createGraphs(pointId,signalLength){
+	
+	SignalProcessingDwr.dft(pointId,signalLength,function(response){
 		
 		signalData = response.data.signal;
 		createDateGraph(signalData,'signal');
@@ -17,9 +52,7 @@ require(["dojo/domReady!"],
 		
 		
 	});
-
-}); // require
-
+}
 
 
 // Wrapping in nv.addGraph allows for '0 timeout render', stores rendered charts in nv.graphs, and may do more in the future... it's NOT required

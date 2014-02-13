@@ -8,13 +8,13 @@ package com.plushpay.mango.signalprocessing.web.dwr;
  * @author Terry Packer
  *
  */
-public class D3DataSeries {
+public class D3TimeDataSeries {
 	
 	private String key; //Series Name
 	private String color; //
-	private D3Value[] values;
+	private D3TimeValue[] values;
 	
-	public D3DataSeries(String key, String color, D3Value[] values){
+	public D3TimeDataSeries(String key, String color, D3TimeValue[] values){
 		this.key = key;
 		this.color = color;
 		this.values = values;
@@ -28,11 +28,11 @@ public class D3DataSeries {
 		this.key = key;
 	}
 
-	public D3Value[] getValues() {
+	public D3TimeValue[] getValues() {
 		return values;
 	}
 
-	public void setValues(D3Value[] values) {
+	public void setValues(D3TimeValue[] values) {
 		this.values = values;
 	}
 
