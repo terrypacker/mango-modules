@@ -4,6 +4,8 @@
 var signalData;
 var dftData;
 var signalProcessor;
+var allPoints = [];
+var selectedPoints = [];
 
 //Run on page load
 require(["deltamation/StoreView", "dijit/form/CheckBox","dojo/store/Memory",
@@ -11,12 +13,12 @@ require(["deltamation/StoreView", "dijit/form/CheckBox","dojo/store/Memory",
          "dojo/domReady!"],
 function(StoreView, CheckBox, Memory, FilteringSelect, ValidationTextBox, Button) {
 	
-	
 	signalProcessor = {
-			dataPoint: new FilteringSelect({
-				store: stores.allDataPoints.cache,
-				labelAttr: 'extendedName'
-				}, "signalPoint"),
+			//Edit for Dojo quiery bug for < 2.3 Core
+//			dataPoint: new FilteringSelect({
+//				store: stores.allDataPoints.cache,
+//				labelAttr: 'extendedName'
+//				}, "signalPoint"),
 				
 			signalLength: new ValidationTextBox({},"signalLength"),
 			
@@ -30,8 +32,97 @@ function(StoreView, CheckBox, Memory, FilteringSelect, ValidationTextBox, Button
 	};
 	
 	
+	//********** START FOR PRE-2.3 Core Dojo Query Bug **************//
+    SignalProcessingDwr.getDataPoints(function(response) {
+        dojo.forEach(response.data.allDataPoints, function(item) {
+            allPoints.push({
+                id: item.id, 
+                name: item.name, 
+                enabled: item.enabled, 
+                fancyName: item.name,
+                dataTypeId: item.dataType
+            });
+        });
+        
+
+        // Create the lookup
+        signalProcessor.dataPoint = new dijit.form.FilteringSelect({
+            store: new dojo.store.Memory({ data: allPoints }),
+            labelAttr: "fancyName",
+            labelType: "html",
+            searchAttr: "name",
+            autoComplete: false,
+            style: "width: 254px;",
+            queryExpr: "*\${0}*",
+            highlightMatch: "all",
+            required: false,
+            onChange: function(point) {
+                if (this.item) {
+                    selectPoint(this.item.id);
+                    //UN-comment when ready to use multiple points this.reset();
+                }
+            }
+        }, "signalPoint");  
+    });
+	
+      //**********  END FOR PRE-2.3 Core Dojo Query Bug **************//
+	
+	
+
+	
+	
 
 }); // require
+
+/**
+ * Test to see if point is in our selected list.
+ * @param pointId
+ * @returns {Boolean}
+ */
+function containsPoint(pointId) {
+    return getElement(selectedPoints, pointId, "id") != null;
+}
+/**
+ * Select a point utility
+ * @param pointId
+ */
+function selectPoint(pointId) {
+    if (!containsPoint(pointId)) {
+        addToSelectedArray(pointId);
+    }
+}
+
+/**
+ * Add a point to the selected Array
+ */
+function addToSelectedArray(pointId) {
+    var data = getElement(allPoints, pointId);
+    
+    if (data) {
+        
+        data.fancyName = "<span class='disabled'>"+ data.name +"</span>";
+        
+        // Missing names imply that the point was deleted, so ignore.
+        selectedPoints[selectedPoints.length] = {
+            id : pointId,
+            pointName : data.name,
+            enabled : data.enabled,
+            dataTypeString : data.dataTypeString,
+        };
+    }
+}
+
+/**
+ * Remove the point from the selected points
+ */
+function removeFromSelectedPoints(pointId) {
+    removeElement(selectedPoints, pointId);
+    refreshSelectedPoints();
+    
+    var data = getElement(allPoints, pointId);
+    if (data)
+        data.fancyName = data.name;
+}
 
 
 /**

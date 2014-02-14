@@ -11,10 +11,17 @@ import math.jwave.Transform;
 import math.jwave.transforms.DiscreteFourierTransform;
 
 import com.serotonin.m2m2.Common;
+import com.serotonin.m2m2.DataTypes;
+import com.serotonin.m2m2.db.dao.DataPointDao;
 import com.serotonin.m2m2.db.dao.PointValueDao;
 import com.serotonin.m2m2.i18n.ProcessResult;
 import com.serotonin.m2m2.rt.dataImage.PointValueTime;
+import com.serotonin.m2m2.vo.DataPointExtendedNameComparator;
+import com.serotonin.m2m2.vo.DataPointVO;
+import com.serotonin.m2m2.vo.User;
+import com.serotonin.m2m2.vo.permission.Permissions;
 import com.serotonin.m2m2.web.dwr.ModuleDwr;
+import com.serotonin.m2m2.web.dwr.beans.DataPointBean;
 import com.serotonin.m2m2.web.dwr.util.DwrPermission;
 
 /**
@@ -23,6 +30,39 @@ import com.serotonin.m2m2.web.dwr.util.DwrPermission;
  */
 public class SignalProcessingDwr extends ModuleDwr{
 	
+	@DwrPermission(user = true)
+	public ProcessResult getDataPoints(){
+		ProcessResult result = new ProcessResult();
+		User user = Common.getUser();
+		
+        List<DataPointVO> points = new DataPointDao().getDataPoints(DataPointExtendedNameComparator.instance, false);
+        if (!Permissions.hasAdmin(user)) {
+            List<DataPointVO> userPoints = new ArrayList<DataPointVO>();
+            for (DataPointVO dp : points) {
+            	//TODO Fix up to Allow Multistate and Boolean types, will need to fix up the DFT method too
+                if ((Permissions.hasDataPointReadPermission(user, dp))&&(dp.getPointLocator().getDataTypeId() == DataTypes.NUMERIC))
+                    userPoints.add(dp);
+            }
+            points = userPoints;
+        }else{
+            List<DataPointVO> userPoints = new ArrayList<DataPointVO>();
+            for (DataPointVO dp : points) {
+            	//TODO Fix up to Allow Multistate and Boolean types, will need to fix up the DFT method too
+                if (dp.getPointLocator().getDataTypeId() == DataTypes.NUMERIC)
+                    userPoints.add(dp);
+            }
+            points = userPoints;
+        }
+
+        List<DataPointBean> data = new ArrayList<DataPointBean>();
+        for (DataPointVO dp : points)
+            data.add(new DataPointBean(dp));
+		
+		
+		result.addData("allDataPoints",data);
+		
+		return result;
+	}	
 	
 	@DwrPermission(user = true)
 	public ProcessResult dft(int dataPointId, int windowSize){
@@ -51,6 +91,7 @@ public class SignalProcessingDwr extends ModuleDwr{
 			signalValues[i++] = new D3TimeValue(value.getTime(),value.getDoubleValue());
 			
 			if(lastSampleTime != null){
+				//TODO Could add some features that would indicate that samples times are irregular
 				avgSamplePeriod = avgSamplePeriod + (lastSampleTime - value.getTime());
 				lastSampleTime = value.getTime();
 			}else{
