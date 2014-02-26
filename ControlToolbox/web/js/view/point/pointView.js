@@ -136,5 +136,7 @@ points = new StoreView({
     
 });
 
+points.refresh();
+
 }); // require
     

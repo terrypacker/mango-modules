@@ -29,16 +29,22 @@ import com.serotonin.util.SerializationHelper;
 public class ControlToolboxAlgorithmVO extends AbstractVO<ControlToolboxAlgorithmVO>{
 
 	public static final int PID_TYPE = 1;
+	public static final int GA_TYPE = 2;
     public static final ExportCodes ALGORITHM_TYPE_CODES = new ExportCodes();
 
     static {
     	ALGORITHM_TYPE_CODES.addElement(PID_TYPE, "PID",
-                "controltoolbox.algorithm.type.pid");}
+                "controltoolbox.algorithm.type.pid");
+    	ALGORITHM_TYPE_CODES.addElement(GA_TYPE, "GA",
+                "controltoolbox.algorithm.type.ga");
+    	
+    }
+    
 
 	public static final String XID_PREFIX = "CTA_";
 
 	private int algorithmType = PID_TYPE;  //Algorithm Code 
-	private AlgorithmProperties properties;
+	private AlgorithmProperties<?> properties;
 
 	/*
 	 * (non-Javadoc)

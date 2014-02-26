@@ -41,6 +41,8 @@ public class ControlToolboxPointVO extends AbstractActionVO<ControlToolboxPointV
 	public static final int INPUT_TYPE = 1;
 	public static final int OUTPUT_TYPE = 2;
 	public static final int SETPOINT_TYPE = 3;
+	public static final int SYSTEM_OUTPUT_TYPE = 4;
+	
     public static final ExportCodes POINT_TYPES = new ExportCodes();
     static {
         POINT_TYPES.addElement(INPUT_TYPE, "INPUT",
@@ -49,6 +51,9 @@ public class ControlToolboxPointVO extends AbstractActionVO<ControlToolboxPointV
         		"controltoolbox.point.type.output");
         POINT_TYPES.addElement(SETPOINT_TYPE, "SETPOINT",
         		"controltoolbox.point.type.setpoint");
+        POINT_TYPES.addElement(SYSTEM_OUTPUT_TYPE, "SYSTEM_OUTPUT",
+        		"controltoolbox.point.type.systemOutput");
+        
         
     }
 
@@ -204,6 +209,7 @@ public class ControlToolboxPointVO extends AbstractActionVO<ControlToolboxPointV
      */
     
     private static final int version = 1;
+
 
     
     private void writeObject(ObjectOutputStream out) throws IOException {

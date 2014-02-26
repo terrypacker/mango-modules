@@ -45,5 +45,12 @@ public abstract class ControlToolboxControlAlgorithmRT {
 	 * 
 	 */
 	public abstract void calculate();
+	
+	/**
+	 * Allow the Controller To Know about the System Output Changes 
+	 * 
+	 * @param systemOutputVector
+	 */
+	public abstract void setSystemOutput(double[] systemOutputVector);
 
 }

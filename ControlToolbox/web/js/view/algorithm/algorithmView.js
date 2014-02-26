@@ -106,8 +106,15 @@ algorithms = new StoreView({
     	});
     },
 
-
+    /**
+     * Refresh the Grid
+     */
+    refresh: function(){
+        this.grid.set('query', null);
+    },
 });
+
+algorithms.refresh();
 
 //Temp callback setup  
 // to be replaced with scriptHasHooks concept from dojox/dijit content pane

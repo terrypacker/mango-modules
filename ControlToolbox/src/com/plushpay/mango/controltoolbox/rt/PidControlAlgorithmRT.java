@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2013 Infinite Automation Software. All rights reserved.
+ * Copyright (C) 2013 PlushPay Software. All rights reserved.
  * @author Terry Packer
  */
 package com.plushpay.mango.controltoolbox.rt;
@@ -207,6 +207,16 @@ public class PidControlAlgorithmRT extends ControlToolboxControlAlgorithmRT{
 
 	public void setOutputHighLimit(double[] outputHighLimit) {
 		this.outputHighLimit = outputHighLimit;
+	}
+
+
+	/* (non-Javadoc)
+	 * @see com.plushpay.mango.controltoolbox.rt.ControlToolboxControlAlgorithmRT#setSystemOutput(double[])
+	 */
+	@Override
+	public void setSystemOutput(double[] systemOutputVector) {
+		// TODO Auto-generated method stub
+		
 	}
 
 

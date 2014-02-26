@@ -18,6 +18,7 @@ controllers = new StoreView({
     editId: 'editControllerDiv',
     closeEditOnSave: false,
     defaultSort: [{attribute: "name"}],
+    defaultQuery: {},
     
     columns: {
         name: mangoMsg['common.name']
@@ -99,10 +100,17 @@ controllers = new StoreView({
     	delete points.filters['controllerId'];
     	points.refresh();
 
-     }
+     },
     
+    /**
+     * Refresh the Grid
+     */
+    refresh: function(){
+        this.grid.set('query', null);
+    },
+
 });
 
-
+    controllers.refresh();
 
 }); // require
