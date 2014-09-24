@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Copyright (C) 2014 PlushPay Software. All rights reserved.
+    @author Terry Packer
+-->
+
+<doxManifest>
+  <item id="learning-pp" key="dox.learningPP" filename="pp.htm">
+    <relation id="learning-ds"/>
+  </item>
+
+  <item id="learning-ds" key="dox.learningDS" filename="ds.htm">
+    <relation id="learning-pp"/>
+  </item>
+</doxManifest>

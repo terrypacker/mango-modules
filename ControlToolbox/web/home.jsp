@@ -10,13 +10,11 @@
 <%@ include file="/WEB-INF/jsp/include/tech.jsp" %>
 
 <tag:page dwr="DataPointDwr,ControlToolboxControllerDwr,ControlToolboxPointDwr,ControlToolboxAlgorithmDwr,SignalProcessingDwr">
-    <script type="text/javascript" src="${modulePath}/web/js/stores.js"></script>
-    <script type="text/javascript" src="${modulePath}/web/js/view/controller/controllerView.js"></script>
-    <script type="text/javascript" src="${modulePath}/web/js/view/point/pointView.js"></script>
-    <script type="text/javascript" src="${modulePath}/web/js/view/algorithm/algorithmView.js"></script>
-    <script type="text/javascript" src="${modulePath}/web/js/view/controltoolbox.js"></script>
-
-
+    <tag:versionedJavascript src="${modulePath}/web/js/stores.js" />
+    <tag:versionedJavascript src="${modulePath}/web/js/view/controller/controllerView.js" />
+    <tag:versionedJavascript  src="${modulePath}/web/js/view/point/pointView.js" />
+    <tag:versionedJavascript  src="${modulePath}/web/js/view/algorithm/algorithmView.js" />
+    <tag:versionedJavascript  src="${modulePath}/web/js/view/controltoolbox.js" />
        
    <div id="controlToolboxTabContainer" >
    

@@ -4,7 +4,6 @@
 --
 
 -- Make sure that everything get created with utf8 as the charset.
-alter database default character set utf8;
 
 create table neuralNetworks (
   id int not null auto_increment,
@@ -19,7 +18,7 @@ create table neuralNetworks (
   trainingPeriodEnd bigint not null,
   properties varchar(200) not null,
   primary key (id)
-) engine=InnoDB;
+);
 
 alter table neuralNetworks add constraint neuralNetworksUn1 unique (xid);
 
@@ -34,7 +33,7 @@ create table neuralPoints (
   trainingDataPointId int not null,
   networkId int not null,
   primary key (id)
-) engine=InnoDB;
+) ;
 
 alter table neuralPoints add constraint neuralPointsUn1 unique (xid);
 alter table neuralPoints add constraint neuralPointsFk1 foreign key (dataPointId) references dataPoints(id);
@@ -48,7 +47,7 @@ create table neuralHiddenLayers (
   numberOfNeurons int not null,
   networkId int not null,
   primary key (id)
-) engine=InnoDB;
+);
 
 alter table neuralHiddenLayers add constraint neuralHiddenLayersUn1 unique (xid);
 alter table neuralHiddenLayers add constraint neuralHiddenLayersFk2 foreign key (networkId) references neuralNetworks(id);

@@ -11,9 +11,6 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="lib/neuroph-core-2.8.jar" sourcepath="/Users/tpacker/Documents/Work/PlushPay/Projects/NeuralNet/neuroph-2.8/sources/Neuroph-2.8/Core/src/main/java"/>
-	<classpathentry kind="lib" path="lib/neuroph-imgrec-2.8.jar"/>
-	<classpathentry kind="lib" path="lib/neuroph-ocr-2.8.jar"/>
 	<classpathentry kind="src" output="maven-target/test-classes" path="test">
 		<attributes>
 			<attribute name="optional" value="true"/>
