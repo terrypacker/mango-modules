@@ -7,9 +7,7 @@ package com.plushpay.mango.controltoolbox.dao;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 import org.apache.commons.logging.LogFactory;
@@ -19,6 +17,7 @@ import com.plushpay.mango.controltoolbox.ControlToolboxAlgorithmAuditEventTypeDe
 import com.plushpay.mango.controltoolbox.db.SchemaDefinition;
 import com.plushpay.mango.controltoolbox.vo.AlgorithmProperties;
 import com.plushpay.mango.controltoolbox.vo.ControlToolboxAlgorithmVO;
+import com.serotonin.db.pair.IntStringPair;
 import com.serotonin.m2m2.db.dao.AbstractDao;
 import com.serotonin.util.SerializationHelper;
 
@@ -38,31 +37,16 @@ public class ControlToolboxAlgorithmDao extends AbstractDao<ControlToolboxAlgori
      * @see com.deltamation.mango.downtime.db.GenericDao#getProperties()
      */
     @Override
-    protected List<String> getProperties() {
-        return Arrays.asList(
-                "id",
-                "xid",
-                "name",
-                "algorithmType",
-                "data"
-                );
+    protected LinkedHashMap<String, Integer> getPropertyTypeMap() {
+    	LinkedHashMap<String, Integer> types = new LinkedHashMap<String, Integer>();
+    	types.put("id", Types.INTEGER);
+    	types.put("xid", Types.VARCHAR);
+    	types.put("name", Types.VARCHAR);
+    	types.put("algorithmType", Types.INTEGER);
+    	types.put("data", Types.BLOB);
+        
+        return types;
     }
-
-	/**
-	 * This method is required because we are using a lob type
-	 * TODO make this a map to sync with voToObjectArray
-	 * 
-	 * 
-	 */
-	@Override
-	protected List<Integer> getPropertyTypes(){
-		return Arrays.asList(
-					Types.VARCHAR, //xid
-					Types.VARCHAR, //name
-					Types.INTEGER, //algo type
-					Types.BLOB //data
-				);
-	}
     
 	/* (non-Javadoc)
 	 * @see com.serotonin.m2m2.db.dao.AbstractDao#getTableName()
@@ -104,14 +88,6 @@ public class ControlToolboxAlgorithmDao extends AbstractDao<ControlToolboxAlgori
 	}
 
 	/* (non-Javadoc)
-	 * @see com.serotonin.m2m2.db.dao.AbstractBasicDao#getPropertiesMap()
-	 */
-	@Override
-	protected Map<String, String> getPropertiesMap() {
-		return new HashMap<String,String>();
-	}
-
-	/* (non-Javadoc)
 	 * @see com.serotonin.m2m2.db.dao.AbstractBasicDao#getRowMapper()
 	 */
 	@Override
@@ -133,6 +109,15 @@ public class ControlToolboxAlgorithmDao extends AbstractDao<ControlToolboxAlgori
             return net;
         }
     }
+
+	/* (non-Javadoc)
+	 * @see com.serotonin.m2m2.db.dao.AbstractBasicDao#getPropertiesMap()
+	 */
+	@Override
+	protected Map<String, IntStringPair> getPropertiesMap() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 
 }

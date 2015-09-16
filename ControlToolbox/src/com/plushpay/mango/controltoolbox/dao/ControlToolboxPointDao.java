@@ -6,8 +6,8 @@ package com.plushpay.mango.controltoolbox.dao;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Arrays;
-import java.util.HashMap;
+import java.sql.Types;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -17,6 +17,7 @@ import org.springframework.jdbc.core.RowMapper;
 import com.plushpay.mango.controltoolbox.ControlToolboxPointAuditEventTypeDefinition;
 import com.plushpay.mango.controltoolbox.db.SchemaDefinition;
 import com.plushpay.mango.controltoolbox.vo.ControlToolboxPointVO;
+import com.serotonin.db.pair.IntStringPair;
 import com.serotonin.m2m2.db.dao.AbstractDao;
 
 /**
@@ -87,33 +88,20 @@ public class ControlToolboxPointDao extends AbstractDao<ControlToolboxPointVO>{
 	 * @see com.serotonin.m2m2.db.dao.AbstractBasicDao#getProperties()
 	 */
     @Override
-    protected List<String> getProperties() {
-        return Arrays.asList(
-                "id",
-                "xid",
-                "name",
-                "enabled",
-                "pointType",
-                "delay",
-                "dataPointId",
-                "controllerId",
-                "highLimit",
-                "lowLimit"
-                
-                );
-    }
-
-
-
-
-	/* (non-Javadoc)
-	 * @see com.serotonin.m2m2.db.dao.AbstractBasicDao#getPropertiesMap()
-	 */
-	@Override
-	protected Map<String, String> getPropertiesMap() {
-		return new HashMap<String,String>();
-	}
-
+    protected LinkedHashMap<String, Integer> getPropertyTypeMap() {
+    	LinkedHashMap<String, Integer> types = new LinkedHashMap<String, Integer>();
+    	types.put("id", Types.INTEGER);
+    	types.put("xid", Types.VARCHAR);
+    	types.put("name", Types.VARCHAR);
+    	types.put("enabled", Types.CHAR);
+    	types.put("pointType", Types.INTEGER);
+    	types.put("delay", Types.INTEGER);
+    	types.put("dataPointId", Types.INTEGER);
+    	types.put("controllerId", Types.INTEGER);
+    	types.put("highLimit", Types.DOUBLE);
+    	types.put("lowLimit", Types.DOUBLE);
+    	return types;
+     }
 
 
 
@@ -151,6 +139,16 @@ public class ControlToolboxPointDao extends AbstractDao<ControlToolboxPointVO>{
 	 */
 	public List<ControlToolboxPointVO> getControllerPoints(int inputType, int controllerId) {
 		return query(SELECT_ALL + " WHERE pointType = ? AND controllerId = ? ORDER BY delay",new Object[]{inputType,controllerId}, new ControlNetworkPointRowMapper());
+	}
+
+
+	/* (non-Javadoc)
+	 * @see com.serotonin.m2m2.db.dao.AbstractBasicDao#getPropertiesMap()
+	 */
+	@Override
+	protected Map<String, IntStringPair> getPropertiesMap() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

@@ -2,9 +2,8 @@ package com.plushpay.mango.controltoolbox.dao;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
+import java.sql.Types;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 import org.apache.commons.logging.LogFactory;
@@ -13,6 +12,7 @@ import org.springframework.jdbc.core.RowMapper;
 import com.plushpay.mango.controltoolbox.ControlToolboxControllerAuditEventTypeDefinition;
 import com.plushpay.mango.controltoolbox.db.SchemaDefinition;
 import com.plushpay.mango.controltoolbox.vo.ControlToolboxControllerVO;
+import com.serotonin.db.pair.IntStringPair;
 import com.serotonin.m2m2.db.dao.AbstractDao;
 
 /**
@@ -37,14 +37,15 @@ public class ControlToolboxControllerDao extends AbstractDao<ControlToolboxContr
      * @see com.deltamation.mango.downtime.db.GenericDao#getProperties()
      */
     @Override
-    protected List<String> getProperties() {
-        return Arrays.asList(
-                "id",
-                "xid",
-                "name",
-                "enabled",
-                "algorithmId"
-                );
+    protected LinkedHashMap<String, Integer> getPropertyTypeMap() {
+    	LinkedHashMap<String, Integer> types = new LinkedHashMap<String, Integer>();
+    	types.put("id", Types.INTEGER);
+    	types.put("xid", Types.VARCHAR);
+    	types.put("name", Types.VARCHAR);
+    	types.put("enabled", Types.CHAR);
+    	types.put("algorithmId", Types.INTEGER);
+
+    	return types;
     }
 
 	/* (non-Javadoc)
@@ -87,14 +88,6 @@ public class ControlToolboxControllerDao extends AbstractDao<ControlToolboxContr
 	}
 
 	/* (non-Javadoc)
-	 * @see com.serotonin.m2m2.db.dao.AbstractBasicDao#getPropertiesMap()
-	 */
-	@Override
-	protected Map<String, String> getPropertiesMap() {
-		return new HashMap<String,String>();
-	}
-
-	/* (non-Javadoc)
 	 * @see com.serotonin.m2m2.db.dao.AbstractBasicDao#getRowMapper()
 	 */
 	@Override
@@ -115,6 +108,15 @@ public class ControlToolboxControllerDao extends AbstractDao<ControlToolboxContr
             return net;
         }
     }
+
+	/* (non-Javadoc)
+	 * @see com.serotonin.m2m2.db.dao.AbstractBasicDao#getPropertiesMap()
+	 */
+	@Override
+	protected Map<String, IntStringPair> getPropertiesMap() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 
 }
