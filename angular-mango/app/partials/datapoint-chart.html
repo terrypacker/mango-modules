@@ -1,0 +1,103 @@
+<div class="col-sm-3">
+    <!--Sidebar content-->
+    <hr>
+    <a href="/app/#/datapoints">All Data Points</a>
+    <br>
+    <a href="/app/#/logs">Logs</a>
+    <hr>
+        <h3>HTML 5 Inputs</h3><br>
+        <div>
+            <div class="form-group">
+                <label for="from-html5">From</label>
+                <input id="from-html5" class="form-control" type="datetime-local" data-ng-model="chartSettings.from" ng-change="loadChartData()"></input>
+            </div>
+            <div class="form-group">
+                <label for="to-html5">To</label>
+                <input id="to-html5" class="form-control" type="datetime-local" data-ng-model="chartSettings.to" ng-change="loadChartData()"></input>
+            </div>
+            <div class="form-group">
+                <label for="rollup-html5">Rollup</label>
+                <select id="rollup-html5" class="form-control" data-ng-model="chartSettings.rollup" ng-change="loadChartData()">
+                    <option value="NONE">None</option>
+                    <option value="AVERAGE">Average</option>
+                    <option value="ACCUMULATOR">Accumulator</option>
+                    <option value="COUNT">Count</option>
+                    <option value="DELTA">Delta</option>
+                    <option value="Integral">Integral</option>
+                    <option value="MAXIMUM">Maximum</option>
+                    <option Value="MINIMUM">Minimum</option>
+                    <option value="SUM">Sum</option>
+                    <option value="FIRST">First</option>
+                    <option value="LAST">Last</option>
+                </select>
+            </div>
+            <div class="form-inline">
+                <div class="form-group">
+                    <label for="periods-html5">Periods</label>
+                    <input id="periods-html5" type="number" class="form-control" data-ng-model="chartSettings.timePeriods" ng-change="loadChartData()"></input>
+                </div>
+                <div class="form-group">
+                    <label for="periodType-html5">Type</label>
+                    <select id="periodType-html5" class="form-control" data-ng-model="chartSettings.timePeriodType" ng-change="loadChartData()">
+                        <option value="SECONDS">Seconds</option>
+                        <option value="MINUTES">Minutes</option>
+                        <option value="HOURS">Hours</option>
+                        <option value="DAYS">Days</option>
+                        <option Value="WEEKS">Weeks</option>
+                        <option Value="MONTHS">Months</option>
+                        <option Value="YEARS">Years</option>
+                    </select>
+                </div>
+            </div>
+             <div class="checkbox">
+                <label>
+                <input id="unit-convert-html5" type="checkbox" data-ng-model="chartSettings.unitConversion" ng-change="loadChartData()"></input>
+                Convert To Displayed Unit
+                </label>
+            </div>
+        </div>
+    <hr>
+    <h3>Angular-UI Inputs</h3><br>
+    <label for="from-date">From:</label>
+    <div id="from-date" class="dropdown">
+        <a class="dropdown-toggle my-toggle-select" id="dLabel" role="button" data-toggle="dropdown" data-target="#" href="">
+            <div class="input-append"><input type="text" class="input-large" data-ng-model="chartSettings.from"><span class="add-on"><i
+                class="icon-calendar"></i></span>
+            </div>
+        </a>
+        <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+            <datetimepicker data-ng-model="chartSettings.from"
+                        data-datetimepicker-config="{ dropdownSelector: '.my-toggle-select' }" ng-change="loadChartData()"></datetimepicker>
+        </ul>
+    </div>
+    <label for="to-date">To:</label>
+    <div id="to-date" class="dropdown">
+        <a class="dropdown-toggle my-toggle-select" id="dLabel" role="button" data-toggle="dropdown" data-target="#" href="">
+            <div class="input-append"><input type="text" class="input-large" data-ng-model="chartSettings.to"><span class="add-on"><i
+                class="icon-calendar"></i></span>
+            </div>
+        </a>
+        <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+            <datetimepicker data-ng-model="chartSettings.to"
+                        data-datetimepicker-config="{ dropdownSelector: '.my-toggle-select' }" ng-change="loadChartData()"></datetimepicker>
+        </ul>
+    </div>
+
+        <button class="btn btn-default" ng-click="loadChartData()">Refresh Chart</button>
+    <hr>
+</div>
+<div class="col-sm-9">
+	
+	<div ng-switch on="dataPoint.enabled">
+	<h2 ng-switch-when="true" >{{dataPoint.name}}
+		<span  class="label label-success">enabled</span>
+		<span>{{currentValue.renderedValue}}</span>
+	</h2>
+	<h2 ng-switch-when="false">{{dataPoint.name}}
+		<span class="label label-danger"> disabled</span>
+	</h2>
+	</div>
+	<hr>
+        <am-chart id="myFirstChart" options="amChartOptions"></am-chart>    
+    <hr>
+</div>

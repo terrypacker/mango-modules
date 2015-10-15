@@ -1,0 +1,14 @@
+<table class="table-striped">
+    <tr><td><b>ID</b></td><td>{{dataPoint.id}}</td></tr>
+	<tr><td><b>XID</b></td><td>{{dataPoint.xid}}</td></tr>
+	<tr><td><b>Name</b></td><td>{{dataPoint.name}}</td></tr>
+	<tr><td><b>Device Name</b></td><td>{{dataPoint.deviceName}}</td></tr>
+	<tr><td><b>Data Source Name</b></td><td>{{dataPoint.dataSourceName}}</td></tr>
+	<tr><td><b>Read Permissions</b></td><td>{{dataPoint.readPermission}}</td></tr>
+	<tr><td><b>Set Permissions</b></td><td>{{dataPoint.setPermission}}</td></tr>
+	<tr ng-repeat="(key, value) in dataPoint.pointLocator">
+		<td><b>{{key}}<b></td><td>{{value}}</td>
+	</tr>
+	<tr><td><b>Use Integral Unit</b></td><td>{{dataPoint.useIntegralUnit | checkmark}}</td></tr>
+    <tr><td><b>Use Rendered Unit</b></td><td>{{dataPoint.useRenderedUnit | checkmark}}</td></tr>
+</table>

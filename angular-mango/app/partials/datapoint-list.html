@@ -1,0 +1,35 @@
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-sm-2">
+        <!--Sidebar content-->
+        <hr>
+        Search: <input ng-model="query">
+        <hr>
+        Sort by:
+        <select ng-model="orderProp">
+          <option value="name">Name</option>
+          <option value="xid">XID</option>
+        </select>
+		<hr>
+        <mango-datapoint-quickview></mango-datapoint-quickview>
+        <mango-gauge datapoint-id="12"></mango-gauge>
+        <input ng-model="rqlquery">
+        <mango-datapoint-table rql="rqlquery"></mango-datapoint-table>
+        <mango-serial-chart config="/configs/red-serial.json"/>
+        <hr>
+        <!-- Nav Section -->
+        <a href="/app/#/logs">Logs</a>
+      </div>
+      <div class="col-sm-10">
+        <!--Body content-->
+		<h2>Data Points List</h2>
+        <ul>
+          <li ng-repeat="dataPoint in dataPoints | filter:query | orderBy:orderProp" ng-mouseover="setQuickView(dataPoint)" ng-mouseleave="clearQuickView()" ng-switch on="dataPoint.enabled" class="dataPoint-listing">
+            <span ng-switch-when="true" class="label label-success"><a href="#/datapoints/{{dataPoint.xid}}">{{dataPoint.xid}} - {{dataPoint.name}}</a></span>
+            <span ng-switch-when="false" class="label label-danger"><a href="#/datapoints/{{dataPoint.xid}}">{{dataPoint.xid}} - {{dataPoint.name}}</a></span>
+          </li>
+        </ul>
+
+      </div>
+    </div>
+  </div>

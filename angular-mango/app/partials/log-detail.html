@@ -1,0 +1,29 @@
+<div class="col-sm-2">
+    <!--Sidebar content-->
+    <hr>
+    <a href="/app/#/datapoints">All Data Points</a>
+    <br>
+    <a href="/app/#/logs">Logs</a>
+    <hr>
+    Search: <input ng-model="query">
+    </hr>
+</div>
+<div class="col-sm-10">
+	<h2>{{logfileName}}</h2>
+    <table class="table-striped" style="width: 100%; word-break: break-word">
+        <thead>
+        <tr>
+        <th>Level</th><th>Class</th><th>Method</th><th>Line</th><th>Message</th><th>Stacktrace</th><th>Timestamp</th>
+        </tr>
+        </thead>
+        <tr ng-repeat="line in logfile | filter:query">
+            <td style="width: 5%">{{line.level}}</td>
+            <td style="width: 15%">{{line.classname}}</td>
+            <td style="width: 10%">{{line.method}}</td>
+            <td style="width: 5%">{{line.lineNumber}}</td>
+            <td style="width: 30%">{{line.message}}</td>
+            <td style="width: 15%">{{line.stackTrace}}</td>
+            <td style="width: 20%">{{line.time}}</td>
+        </tr>
+    </table>
+</div>

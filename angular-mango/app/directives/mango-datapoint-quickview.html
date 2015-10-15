@@ -1,0 +1,12 @@
+<div ng-switch on="quickView.hide">
+    <div ng-switch-when="true">No Point Selected</div>
+    <dl ng-switch-when="false" class="quickView-listing">
+        <dt>Name</dt><dd>{{quickView.dataPoint.name}}</dd>
+        <dt>Data Type</td><dd>{{quickView.dataPoint.pointLocator.dataType}}</dd>
+        <dt>Data Source</dt><dd>{{quickView.dataPoint.dataSourceName}}</dd>
+        <dt>Device Name</dt><dd>{{quickView.dataPoint.deviceName}}</dd>
+        <dt>Unit</dt><dd>{{quickView.dataPoint.unit}}</dd>
+        <dt>Path</dt><dd>{{quickView.current.path}}</dd>
+        <dt>Current Value</dt><dd>{{quickView.current.renderedValue}}</dd>
+    </dl>
+</div>
