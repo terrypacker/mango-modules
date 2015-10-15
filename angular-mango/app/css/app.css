@@ -4,4 +4,27 @@ body {
   padding-top: 20px;
 }
 
+.btn-primary {
+	background-color: #F07800;
+	border-color: #F07800;
+	box-shadow: 5px 5px 5px grey;
+}
 
+.btn-primary:hover, .btn-primary:focus, .btn-primary:active, .btn-primary.active, .open .dropdown-toggle.btn-primary{
+	background-color: #46382A;
+	border-color: #46382A;
+	box-shadow: 5px 5px 5px grey;
+}
+
+.mango-label {
+	text-align: left; 
+	font-weight: bold;
+	float: left; 
+	padding-right: 5px;
+	width: 100px;
+}
+.mango-value {
+	float: left;
+	text-align: left;
+	padding-left: 5px;
+}

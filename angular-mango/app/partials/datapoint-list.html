@@ -1,33 +1,36 @@
   <div class="container-fluid">
     <div class="row">
       <div class="col-sm-4">
-        <!--Sidebar content-->
+        <!--TODO Make these clickable to show only these type of points, remove drop shadow when applied-->
+        <div style="width: 60px; height:40px; color: white; text-align: center; padding-top: 10px; background-color:#F07800; border-radius: 20px; box-shadow: 5px 5px 5px grey; margin-bottom:8px; float: left">enabled</div>
+        <div style="width: 60px; height:40px; color: white; text-align: center; padding-top: 10px; background-color:#46382A; border-radius: 20px; box-shadow: 5px 5px 5px grey; float: left">disabled</div>
+        <div style="clear:both"></div>
         <hr>
-        Search: <input ng-model="query">
+        <div class="mango-label">Search</div><br>
+        <input class="form-control mango-value" style="width: 200px;" ng-model="query">
+        <div style="clear:both"></div>
         <hr>
-        Sort by:
-        <select ng-model="orderProp">
+        <div class="mango-label">Sort</div><br>
+        <select class="form-control mango-value" style="width: 200px" ng-model="orderProp">
           <option value="name">Name</option>
           <option value="xid">XID</option>
         </select>
+        <div style="clear:both"></div>
 		<hr>
         <mango-datapoint-quickview></mango-datapoint-quickview>
+        <div style="clear:both"></div>
         <!-- TODO Implement these features
         <mango-gauge datapoint-id="12"></mango-gauge>
         <input ng-model="rqlquery">
         <mango-datapoint-table rql="rqlquery"></mango-datapoint-table>
         <mango-serial-chart config="/configs/red-serial.json"/>
          -->
-        <hr>
-        <!-- Nav Section -->
-        <a href="/app/#/logs">Logs</a>
       </div>
       <div class="col-sm-8" style="padding-bottom: 20px">
         <!--Body content-->
-		<h2>Data Points List</h2>
         <div ng-repeat="dataPoint in dataPoints | filter:query | orderBy:orderProp" ng-mouseover="setQuickView(dataPoint)" ng-mouseleave="clearQuickView()" ng-switch on="dataPoint.enabled" class="dataPoint-listing">
-          <div ng-switch-when="true" style="width:75%; padding:5px; margin-top: 8px; background-color: #1BCC1B; border-radius: 20px; box-shadow: 5px 5px 5px grey; text-align:center"><a href="#/datapoints/{{dataPoint.xid}}" style="color:white">{{dataPoint.xid}} - {{dataPoint.name}}</a></div>
-          <div ng-switch-when="false" style="width:75%; padding:5px; margin-top: 8px; background-color: red; border-radius: 20px; box-shadow: 5px 5px 5px grey; text-align:center"><a href="#/datapoints/{{dataPoint.xid}}" style="color:white">{{dataPoint.xid}} - {{dataPoint.name}}</a></div>
+          <div ng-switch-when="true" style="width:75%; padding:5px; margin-top: 8px; background-color: #F07800; border-radius: 20px; box-shadow: 5px 5px 5px grey; text-align:center"><a href="#/datapoints/{{dataPoint.xid}}" style="color:white">{{dataPoint.xid}} - {{dataPoint.name}}</a></div>
+          <div ng-switch-when="false" style="width:75%; padding:5px; margin-top: 8px; background-color: #46382A; border-radius: 20px; box-shadow: 5px 5px 5px grey; text-align:center"><a href="#/datapoints/{{dataPoint.xid}}" style="color:white">{{dataPoint.xid}} - {{dataPoint.name}}</a></div>
         </div>
       </div>
     </div>

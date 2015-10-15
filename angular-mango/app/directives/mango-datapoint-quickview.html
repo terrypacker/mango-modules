@@ -1,12 +1,19 @@
 <div ng-switch on="quickView.hide">
     <div ng-switch-when="true">No Point Selected</div>
-    <dl ng-switch-when="false" class="quickView-listing">
-        <dt>Name</dt><dd>{{quickView.dataPoint.name}}</dd>
-        <dt>Data Type</td><dd>{{quickView.dataPoint.pointLocator.dataType}}</dd>
-        <dt>Data Source</dt><dd>{{quickView.dataPoint.dataSourceName}}</dd>
-        <dt>Device Name</dt><dd>{{quickView.dataPoint.deviceName}}</dd>
-        <dt>Unit</dt><dd>{{quickView.dataPoint.unit}}</dd>
-        <dt>Path</dt><dd>{{quickView.current.path}}</dd>
-        <dt>Current Value</dt><dd>{{quickView.current.renderedValue}}</dd>
-    </dl>
+    <div ng-switch-when="false" class="quickView-listing">
+        <div class="mango-label">Name</div><div class="mango-value">{{quickView.dataPoint.name}}</div>
+        <div style="clear:both"></div>
+        <div class="mango-label">Data Type</div><div class="mango-value">{{quickView.dataPoint.pointLocator.dataType}}</div>
+        <div style="clear:both"></div>
+        <div class="mango-label">Data Source</div><div class="mango-value">{{quickView.dataPoint.dataSourceName}}</div>
+        <div style="clear:both"></div>
+        <div class="mango-label">Device Name</div><div class="mango-value">{{quickView.dataPoint.deviceName}}</div>
+        <div style="clear:both"></div>
+        <div class="mango-label">Unit</div><div class="mango-value">{{quickView.dataPoint.unit}}</div>
+        <div style="clear:both"></div>
+        <div class="mango-label">Path</div><div class="mango-value">{{quickView.current.path}}</div>
+        <div style="clear:both"></div>
+        <div class="mango-label">Current Value</div><div class="mango-value">{{quickView.current.renderedValue}}</div>
+        <div style="clear:both"></div>
+    </div>
 </div>
