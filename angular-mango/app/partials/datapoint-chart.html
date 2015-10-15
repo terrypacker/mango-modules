@@ -57,34 +57,6 @@
             </div>
         </div>
     <hr>
-    <h3>Angular-UI Inputs</h3><br>
-    <label for="from-date">From:</label>
-    <div id="from-date" class="dropdown">
-        <a class="dropdown-toggle my-toggle-select" id="dLabel" role="button" data-toggle="dropdown" data-target="#" href="">
-            <div class="input-append"><input type="text" class="input-large" data-ng-model="chartSettings.from"><span class="add-on"><i
-                class="icon-calendar"></i></span>
-            </div>
-        </a>
-        <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
-            <datetimepicker data-ng-model="chartSettings.from"
-                        data-datetimepicker-config="{ dropdownSelector: '.my-toggle-select' }" ng-change="loadChartData()"></datetimepicker>
-        </ul>
-    </div>
-    <label for="to-date">To:</label>
-    <div id="to-date" class="dropdown">
-        <a class="dropdown-toggle my-toggle-select" id="dLabel" role="button" data-toggle="dropdown" data-target="#" href="">
-            <div class="input-append"><input type="text" class="input-large" data-ng-model="chartSettings.to"><span class="add-on"><i
-                class="icon-calendar"></i></span>
-            </div>
-        </a>
-        <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
-            <datetimepicker data-ng-model="chartSettings.to"
-                        data-datetimepicker-config="{ dropdownSelector: '.my-toggle-select' }" ng-change="loadChartData()"></datetimepicker>
-        </ul>
-    </div>
-
-        <button class="btn btn-default" ng-click="loadChartData()">Refresh Chart</button>
-    <hr>
 </div>
 <div class="col-sm-9">
 	

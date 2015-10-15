@@ -29,6 +29,12 @@ mangoControllers.controller('DataPointListCtrl', ['$scope', '$http', 'Login', 'D
         };
 }]);
 
+mangoControllers.controller('DataPointCarouselCtrl', ['$scope', '$http', 'Login', 'DataPoint', 'CurrentValueByXid', function($scope, $http, Login, DataPoint, CurrentValueByXid) {
+
+	$scope.dataPoints = DataPoint.query();
+	
+}]);
+
 mangoControllers.controller('DataPointDetailCtrl', ['$scope', '$http', '$routeParams', 'DataPoint','CurrentValueByXid', 'PointValueEvents',
 	function($scope, $http, $routeParams, DataPoint, CurrentValueByXid, PointValueEvents){
 		$scope.dataPointXid = $routeParams.dataPointXid;
@@ -154,3 +160,11 @@ mangoControllers.controller('MangoLogDetailCtrl', ['$scope', '$http', '$routePar
 		$scope.logfileName = $routeParams.logfileName;
         $scope.logfile = MangoLogs.get({filename: $scope.logfileName});
     }]);
+
+mangoControllers.controller('headerCtrl', ['$scope', '$http',
+    function($scope, $http){
+    }]);
+
+mangoControllers.controller('footerCtrl', ['$scope', '$http',
+   function($scope, $http){
+   }]);

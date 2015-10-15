@@ -8,7 +8,8 @@ var mangoApp = angular.module('mangoApp', [
     'mangoFilters',
     'mangoServices',
     'mangoDirectives',
-    'ui.bootstrap.datetimepicker'
+
+    'ui.bootstrap'
 ]);
 
 mangoApp.config(['$routeProvider', '$httpProvider', function($routeProvider, $httpProvider) {
@@ -22,6 +23,10 @@ mangoApp.config(['$routeProvider', '$httpProvider', function($routeProvider, $ht
         when('/datapoints', {
           templateUrl: 'partials/datapoint-list.html',
           controller: 'DataPointListCtrl'
+        }).
+        when('/datapoints_carousel', {
+            templateUrl: 'partials/datapoint-carousel.html',
+            controller: 'DataPointCarouselCtrl'
         }).
         when('/datapoints/:dataPointXid', {
       	  templateUrl: 'partials/datapoint-detail.html',

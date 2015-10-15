@@ -14,8 +14,7 @@
     "jquery-ui": "1.11.4",
     "bootstrap": "~3.1.1",
     "angular-animate": "1.4.x",
-    "angular-bootstrap": "0.13.x",
-    "angular-bootstrap-datetimepicker": "0.3.x",
+    "angular-bootstrap": "0.14.x",
     "amcharts": "3.15.x"
   }
 }

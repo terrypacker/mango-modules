@@ -3,6 +3,7 @@
 <head>
   <meta charset="utf-8">
   <title>Mango Automation</title>
+  <link rel="icon" href="img/favicon.ico">
   <link rel="stylesheet" href="/bower_components/bootstrap/dist/css/bootstrap.css">
   <link rel="stylesheet" href="/bower_components/angular-bootstrap-datetimepicker/src/css/datetimepicker.css"/>
 
@@ -15,7 +16,7 @@
   <script src="/bower_components/angular-resource/angular-resource.js"></script>
   <script src="/bower_components/angular-animate/angular-animate.js"></script>
   <script src="/bower_components/bootstrap/dist/js/bootstrap.js"></script>
-  <script src="/bower_components/angular-bootstrap/ui-bootstrap.js"></script>
+  <script src="/bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
   <script src="/bower_components/moment/moment.js"></script>
   <script src="/bower_components/jquery-ui/jquery-ui.js"></script>
   <script src="/bower_components/angular-bootstrap-datetimepicker/src/js/datetimepicker.js"></script>
@@ -38,15 +39,15 @@
   <script src="js/services.js"></script>
   <script src="js/animations.js"></script>
 
-  
-  
-
 </head>
 <body>
   
-<div class="view-container">
-  <div ng-view class="view-frame"></div>
-</div>
-
+  
+  <div class="view-container">
+    <div header></div>  
+    <div ng-view class="view-frame"></div>
+    <div footer></div>
+  </div>
+  
 </body>
 </html>

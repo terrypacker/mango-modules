@@ -41,4 +41,20 @@ angular.module('mangoDirectives', [])
             }
          }//end watch
        }
-   });
+}).directive('footer', function(){
+	 return {
+		    restrict: 'A',
+		    templateUrl: 'partials/footer.html',
+		    scope: true,
+		    transclude : false,
+		    controller: 'footerCtrl'
+		  };
+}).directive('header', function(){
+	 return {
+		    restrict: 'A',
+		    templateUrl: 'partials/header.html',
+		    scope: true,
+		    transclude : false,
+		    controller: 'headerCtrl'
+		  };
+});
