@@ -98,7 +98,7 @@ mangoControllers.controller('DataPointChartCtrl', ['$scope', '$http', '$routePar
 	            "type": "serial",
 	            "theme": "light",
 	            "marginLeft": 20,
-	            "pathToImages": "/bower_components/amcharts/dist/amcharts/images/",
+	            "pathToImages": "../bower_components/amcharts/dist/amcharts/images/",
                 dataProvider: [],
                 /*Left here for reference as to how the data should look
 	            "dataProvider": [{
