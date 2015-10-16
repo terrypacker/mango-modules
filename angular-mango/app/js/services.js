@@ -113,4 +113,9 @@ mangoServices.factory('DataPoint', ['$resource',
             };
             return socket;        
         }
-  }});
+  }}).factory('AmChartData', function(){
+    	return  {
+    	    		charts: [],
+    	    		configs: []
+    	    	};
+      });

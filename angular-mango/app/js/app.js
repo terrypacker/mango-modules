@@ -11,7 +11,7 @@ var mangoApp = angular.module('mangoApp', [
     'ui.bootstrap'
 ]);
 
-mangoApp.config(['$routeProvider', '$httpProvider', function($routeProvider, $httpProvider) {
+mangoApp.config([ '$routeProvider', '$httpProvider', function($routeProvider, $httpProvider) {
       //Enable cross domain calls
       $httpProvider.defaults.useXDomain = true;
       //Ensure we use Cookie Based Auth

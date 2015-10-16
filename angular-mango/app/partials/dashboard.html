@@ -1,63 +1,13 @@
-<script type="text/javascript">
-//Define global configs that the controller will load
-var amChartConfigs = [];
-amChartConfigs['voltage'] =  {                    
-        type: "gauge",
-        pathToImages: "/resources/amcharts/images/",
-        marginBottom: 20,
-        marginTop: 40,
-        fontSize: 13,
-        theme: "dark",
-        arrows: [
-            {
-                id: "GaugeArrow-1",
-                value: 0
-            }
-        ],
-        axes: [
-            {
-                axisThickness: 1,
-                bottomText: "",
-                bottomTextYOffset: -20,
-                endValue: 220,
-                id: "GaugeAxis-1",
-                valueInterval: 10,
-                bands: [
-                    {
-                        alpha: 0.7,
-                        color: "#00CC00",
-                        endValue: 90,
-                        id: "GaugeBand-1",
-                        startValue: 0
-                    },
-                    {
-                        alpha: 0.7,
-                        color: "#ffac29",
-                        endValue: 130,
-                        id: "GaugeBand-2",
-                        startValue: 90
-                    },
-                    {
-                        alpha: 0.7,
-                        color: "#ea3838",
-                        endValue: 220,
-                        id: "GaugeBand-3",
-                        innerRadius: "95%",
-                        startValue: 130
-                    }
-                ]
-            }
-        ],
-        allLabels: [],
-        balloon: {},
-        titles: []
-};
-</script>
-<div class="col-sm-3">
+<!-- See config file to override chart settings -->
+<script type="text/javascript" src="js/chart-configs.js"></script>
 
+<div class="col-sm-3">
+  <mango-date-rollup-picker id="picker1" chart-id="serial1" api-options="serial1Options"></mango-date-rollup-picker>
 </div>
 <div class="col-sm-9">
-  <am-serial xid="multistate"></am-serial>
-  <am-gauge id="myFirstChart" xid='voltage' config="{{gauge1Config}}"></am-gauge>   
-  <am-gauge id="myFirstSecondChart" xid='temperature' config="{{gauge1Config}}"></am-gauge>    
+  <div class="row">
+    <div class="col-sm-6"><am-gauge id="myFirstChart" xid='voltage'></am-gauge></div>
+    <div class="col-sm-6"><am-gauge id="myFirstSecondChart" xid='temperature'></am-gauge></div>
+  </div>
+  <am-serial id="serial1" xid="voltage" api-options="serial1Options"></am-serial>
 </div>
