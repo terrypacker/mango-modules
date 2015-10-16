@@ -4,7 +4,6 @@
 var mangoControllers = angular.module('mangoControllers', []);
 
 mangoControllers.controller('DataPointListCtrl', ['$scope', '$http', 'Login', 'DataPoint', 'CurrentValueByXid', function($scope, $http, Login, DataPoint, CurrentValueByXid) {
-        
         //auto login
         $http({
                 method: 'GET',
@@ -34,6 +33,66 @@ mangoControllers.controller('DataPointCarouselCtrl', ['$scope', '$http', 'Login'
 	$scope.dataPoints = DataPoint.query();
 	
 }]);
+
+mangoControllers.controller('DashboardCtrl', ['$scope', '$http', 'Login', 'DataPoint', 'PointValueEvents', 
+    function($scope, $http, Login, DataPoint, PointValueEvents) {
+
+	$scope.dataPoints = DataPoint.query();
+	
+	$scope.amChartOptions = {                    
+        type: "gauge",
+        pathToImages: "../bower_components/amcharts/dist/amcharts/images/",
+        marginBottom: 20,
+        marginTop: 40,
+        fontSize: 13,
+        theme: "dark",
+        arrows: [
+            {
+                id: "GaugeArrow-1",
+                value: 0
+            }
+        ],
+        axes: [
+            {
+                axisThickness: 1,
+                bottomText: "",
+                bottomTextYOffset: -20,
+                endValue: 220,
+                id: "GaugeAxis-1",
+                valueInterval: 10,
+                bands: [
+                    {
+                        alpha: 0.7,
+                        color: "#00CC00",
+                        endValue: 90,
+                        id: "GaugeBand-1",
+                        startValue: 0
+                    },
+                    {
+                        alpha: 0.7,
+                        color: "#ffac29",
+                        endValue: 130,
+                        id: "GaugeBand-2",
+                        startValue: 90
+                    },
+                    {
+                        alpha: 0.7,
+                        color: "#ea3838",
+                        endValue: 220,
+                        id: "GaugeBand-3",
+                        innerRadius: "95%",
+                        startValue: 130
+                    }
+                ]
+            }
+        ],
+        allLabels: [],
+        balloon: {},
+        titles: []
+};
+
+}]);
+
 
 mangoControllers.controller('DataPointDetailCtrl', ['$scope', '$http', '$routeParams', 'DataPoint','CurrentValueByXid', 'PointValueEvents',
 	function($scope, $http, $routeParams, DataPoint, CurrentValueByXid, PointValueEvents){

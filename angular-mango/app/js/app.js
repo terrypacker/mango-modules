@@ -8,7 +8,6 @@ var mangoApp = angular.module('mangoApp', [
     'mangoFilters',
     'mangoServices',
     'mangoDirectives',
-
     'ui.bootstrap'
 ]);
 
@@ -20,6 +19,10 @@ mangoApp.config(['$routeProvider', '$httpProvider', function($routeProvider, $ht
       
       //Setup Routes
       $routeProvider.
+      	when('/dashboard', {
+          templateUrl: 'partials/dashboard.html',
+          controller: 'DashboardCtrl'
+        }).
         when('/datapoints', {
           templateUrl: 'partials/datapoint-list.html',
           controller: 'DataPointListCtrl'
