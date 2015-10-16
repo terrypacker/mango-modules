@@ -75,6 +75,17 @@ function mangoAmGauge() {
                  if(typeof o === 'undefined')
                 	 o = $scope.defaultAmGaugeConfig;
                  
+                 var titleSize = 15;
+                 if(typeof attrs.titleSize !== 'undefined')
+                	 titleSize = attrs.titleSize;
+                 if(typeof attrs.title !== 'undefined'){
+                	 o.titles = [
+                	     {
+                	    	text: attrs.title,
+                	    	size: titleSize
+                	     }];
+                 }
+                 
                  // set height and width
                  var height = $scope.height || '400px';
                  var width = $scope.width || '100%';
@@ -204,6 +215,18 @@ function mangoAmSerial() {
             	 var o = amChartOptions || $scope.amChartData.configs[id];
                  if(typeof o === 'undefined')
                 	 o = $scope.defaultAmSerialConfig;
+                 
+                 //Add a Title
+                 var titleSize = 15;
+                 if(typeof attrs.titleSize !== 'undefined')
+                	 titleSize = attrs.titleSize;
+                 if(typeof attrs.title !== 'undefined'){
+                	 o.titles = [
+                	     {
+                	    	text: attrs.title,
+                	    	size: titleSize
+                	     }];
+                 }
                  
                  // set height and width
                  var height = $scope.height || '400px';
