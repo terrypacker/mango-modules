@@ -39,6 +39,10 @@ mangoApp.config([ '$routeProvider', '$httpProvider', function($routeProvider, $h
       	  templateUrl: 'partials/datapoint-chart.html',
       	  controller: 'DataPointChartCtrl'
       	}).
+      	when('/explore', {
+        	  templateUrl: 'partials/explorer.html',
+        	  controller: 'ExplorerCtrl'
+        }).
         when('/logs', {
           templateUrl: 'partials/log-list.html',
           controller: 'MangoLogListCtrl'

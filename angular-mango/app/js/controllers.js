@@ -220,6 +220,110 @@ mangoControllers.controller('MangoLogDetailCtrl', ['$scope', '$http', '$routePar
         $scope.logfile = MangoLogs.get({filename: $scope.logfileName});
     }]);
 
+mangoControllers.controller('ExplorerCtrl', ['$scope', '$compile', 'DataSource', 'DataPoint', function($scope, $compile, DataSource, DataPoint){
+	//List of massaged data points
+	$scope.dataPoints = [];
+	
+	//Create a query model
+	$scope.query = {
+		text: [],
+		dataType: [],
+		dataSourceType: [],
+		names: [],
+	};
+	
+	$scope.getDataSource = function(xid){
+		for(var i=0; i<$scope.dataSources.length; i++){
+			if($scope.dataSources[i].xid === xid)
+				return $scope.dataSources[i];
+		}
+		return null;
+	}
+	
+	//TODO Build the list of points with data source attributes set
+	DataSource.query().$promise.then(function(dataSources){
+		$scope.dataSources = dataSources;
+		
+		DataPoint.query().$promise.then(function(dataPoints){
+			for(var i=0; i<dataPoints.length; i++){
+				var ds = $scope.getDataSource(dataPoints[i].dataSourceXid);
+				if(dataPoints[i].pointLocator === null)
+					console.log(dataPoints[i]);
+				var dp = {
+					name: dataPoints[i].name,
+					xid: dataPoints[i].xid,
+					deviceName: dataPoints[i].deviceName,
+					dataType: dataPoints[i].pointLocator.dataType,
+					dataSourceType: ds.modelType,
+				};
+				$scope.dataPoints.push(dp);
+			}
+		});
+	});
+	
+	//Track the ids for the tags
+	$scope.tagIdCounter = 0;
+	$scope.tagIdValues = [];
+	
+	$scope.addNameFilter = function(){
+		if($scope.query.names.indexOf($scope.query.name) >= 0)
+			return;
+		
+		$scope.query.names.push($scope.query.name);
+		var tagId = $scope.tagIdCounter++;
+		$scope.tagIdValues[tagId] = $scope.query.name;
+		//Now add a tag to the list of filters for the UI
+		$('#search-tags').append($compile('<span id="tag-' + tagId + '" class="label label-primary" style="margin-right: 5px; font-size: 15px;" ng-click="removeNameFilter(' + tagId + ')">' + $scope.query.name + '<span class="glyphicon glyphicon-remove-circle" style="padding-left: 5px"></span></span>')($scope));
+		$scope.query.name = ''; //Clear the input
+	};
+	$scope.removeNameFilter = function(tagId){
+		var value = $scope.tagIdValues[tagId];
+		for(var i=0; i<$scope.query.names.length; i++){
+			if($scope.query.names[i] === value){
+				//Splice out
+				$scope.query.names.splice(i,1);
+				//Remove the span
+				
+				$('#tag-' + tagId).remove();
+				break;
+			}
+		}
+	};	
+	
+	$scope.addQueryFilter = function(name, value, label){
+		//TODO Check for already contains
+		if(typeof $scope.query[name] === 'undefined')
+			$scope.query[name] = [];
+		
+		if($scope.query[name].indexOf(value) >= 0)
+			return;
+		$scope.query[name].push(value);
+		var tagId = $scope.tagIdCounter++;
+		$scope.tagIdValues[tagId] = value;
+		//Now add a tag to the list of filters for the UI
+		$('#search-tags').append($compile('<span id="tag-' + tagId + '" class="label label-primary" style="margin-right: 5px; font-size: 15px;" ng-click="removeQueryFilter(\'' + name +'\',' + tagId + ')">' + label + '<span class="glyphicon glyphicon-remove-circle" style="padding-left: 5px"></span></span>')($scope));
+	};
+	
+	$scope.removeQueryFilter = function(name, tagId){
+		if(typeof $scope.query[name] === 'undefined')
+			return;
+		var value = $scope.tagIdValues[tagId];
+		
+		var filterList = $scope.query[name];
+		for(var i=0; i<filterList.length; i++){
+			if(filterList[i] === value){
+				//Splice out
+				filterList.splice(i,1);
+				$('#tag-' + tagId).remove();
+				break;
+			}
+		}
+	};
+	
+	
+}]);
+
+
 mangoControllers.controller('headerCtrl', ['$scope', '$http',
     function($scope, $http){
     }]);

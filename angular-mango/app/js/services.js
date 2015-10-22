@@ -3,6 +3,32 @@
 /* Services */
 var mangoServices = angular.module('mangoServices', ['ngResource']);
 
+/* Not perfect yet as no RQL so this only lists all of em */
+mangoServices.factory('DataSource', ['$resource', function($resource){
+	
+	return $resource('http://' + mangoHost + '/rest/v1/data-sources/list/:xid', {}, {
+		query: {
+              method:'GET',
+              params:{xid: ''},
+              isArray:true,
+              transformResponse: function(data,headersGetter){
+                  //Quick fix to convert results into format desired
+                  var result = angular.fromJson(data);
+                  if(typeof result.items === 'undefined'){
+                      return result;
+                  }else{
+                      return result.items;
+                  }
+              }
+          	},
+          get: {
+              method:'GET',
+              isArray:false,
+          }
+  });
+}]);
+
+
 mangoServices.factory('DataPoint', ['$resource',
   function($resource){
     return $resource('http://' + mangoHost + '/rest/v1/data-points/:xid', {}, {

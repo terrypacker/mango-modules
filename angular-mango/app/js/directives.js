@@ -126,7 +126,7 @@ function mangoAmGaugeController($scope, AmChartData, PointValueEvents) {
             xid,
             ['UPDATE'],
             function(message){
-            	if($scope.amChart[id].arrows[0].setValue){
+            	if(($scope.amChart[id].arrows[0].setValue)&&(message.payload.enabled === true)){
             		$scope.amChart[id].arrows[0].setValue(message.payload.value.value);
             		$scope.amChart[id].axes[0].setBottomText(message.payload.renderedValue);
                     $scope.amChart[id].validateData();

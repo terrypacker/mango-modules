@@ -1,0 +1,79 @@
+<!-- See config file to override chart settings -->
+<script type="text/javascript" src="js/chart-configs.js"></script>
+
+<div class="col-sm-12">
+  <div class="row">
+    <div class="input-group">
+      <input type="text" class="form-control" placeholder="Search data points..." ng-model="query.name"/>
+      <span class="input-group-btn">
+          <button class="btn btn-default" type="button" ng-click="addNameFilter()">
+            <span class="glyphicon glyphicon-search"></span>
+          </button>
+      </span>
+    </div>
+  </div>
+  <div class="row" style="padding-top:10px">
+    <div class="btn-group" role="group">
+      <div class="dropdown">
+        <button class="btn btn-default dropdown-toggle" type="button" id="dataSourceTypeDropDown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+          Data Source Type
+          <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu" aria-labelledby="dataSourceTypeDropDown">
+          <li ng-click="addQueryFilter('dataSourceType', 'VIRTUAL', 'Virtual Data Source');"><a>Virtual Data Source</a></li>
+          <li ng-click="addQueryFilter('dataSourceType', 'META', 'Meta Data Source');"><a>Meta Data Source</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="btn-group" role="group">
+      <div class="dropdown">
+        <button class="btn btn-default dropdown-toggle" type="button" id="dataTypeDropDown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+          Data Type
+          <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu" aria-labelledby="dataTypeDropDown">
+          <li ng-click="addQueryFilter('dataType', 'NUMERIC', 'Numeric');"><a>Numeric</a></li>
+          <li ng-click="addQueryFilter('dataType', 'BINARY', 'Binary');"><a>Binary</a></li>
+          <li ng-click="addQueryFilter('dataType', 'MULTISTATE', 'Multistate');"><a>Multistate</a></li>
+          <li ng-click="addQueryFilter('dataType', 'ALPHANUMERIC', 'Alphanumeric');"><a>Alphanumeric</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="row" style="padding-top:10px">
+      <div id="search-tags" class="well"></div>
+  </div>
+  <hr> 
+</div>
+
+<div class="col-sm-12">
+  <div ng-repeat="dataPoint in dataPoints | datapointFilter:query">
+    <div class="col-sm-3">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h4>{{dataPoint.deviceName}}</h4>
+          <h5>{{dataPoint.name}}</h5>
+        </div>
+        <div class="panel-body">
+        <ul class="list-group">
+          <li class="list-group-item">{{dataPoint.dataSourceType}}</li>
+          <li class="list-group-item">{{dataPoint.dataType}}</li>
+        </ul>
+        </div>
+        <div class="panel-footer">
+          <div class="btn-group btn-group-justified" role="group" aria-label="dataPointActionsGroup">
+            <div class="btn-group" role="group">
+              <button type="button" class="btn btn-default"><span class="glyphicon glyphicon-signal"></span></button>
+            </div>
+            <div class="btn-group" role="group">
+            <button type="button" class="btn btn-default"><span class="glyphicon glyphicon-download-alt"></span></button>
+            </div>
+            <div class="btn-group" role="group">
+            <button type="button" class="btn btn-default"><span class="glyphicon glyphicon-trash"></span></button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
