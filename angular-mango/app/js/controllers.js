@@ -247,8 +247,12 @@ mangoControllers.controller('ExplorerCtrl', ['$scope', '$compile', 'DataSource',
 		DataPoint.query().$promise.then(function(dataPoints){
 			for(var i=0; i<dataPoints.length; i++){
 				var ds = $scope.getDataSource(dataPoints[i].dataSourceXid);
-				if(dataPoints[i].pointLocator === null)
+				if(dataPoints[i].pointLocator === null){
+					console.log("No Point Locator Model!");
 					console.log(dataPoints[i]);
+					continue;
+				}
+				
 				var dp = {
 					name: dataPoints[i].name,
 					xid: dataPoints[i].xid,
@@ -420,7 +424,11 @@ mangoControllers.controller('TreeCtrl', ['$scope', '$compile', 'AmChartData', 'D
 			for(var i=0; i<dataPoints.length; i++){
 				//Get the data source from memory
 				var ds = $scope.getDataSource(dataPoints[i].dataSourceXid);
-				
+				if(dataPoints[i].pointLocator === null){
+					console.log("No Point Locator Model: ");
+					console.log(dataPoints[i]);
+					continue;
+				}
 				var dp = {
 					name: dataPoints[i].name,
 					xid: dataPoints[i].xid,
