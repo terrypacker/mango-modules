@@ -205,6 +205,10 @@ function mangoAmSerial() {
 
     return { 
         restrict: 'E',
+        scope: {
+        	chartDataPoint: '=',
+        	apiOptions: '='
+        },
         replace:true,
         template: '<div class="amchart"></div>',
         link: function ($scope, $el, attrs) {
@@ -228,6 +232,12 @@ function mangoAmSerial() {
                 	     }];
                  }
                  
+                 var chartXid;
+                 if(typeof attrs.xid !== 'undefined')
+                	 chartXid = attrs.xid;
+                 else if(typeof $scope.chartDataPoint !== 'undefined')
+                	 chartXid = $scope.chartDataPoint.xid;
+                 
                  // set height and width
                  var height = $scope.height || '400px';
                  var width = $scope.width || '100%';
@@ -235,10 +245,11 @@ function mangoAmSerial() {
                      'height': height,
                      'width': width
                  });
+                 
                  $scope.amChartData.charts[id] = AmCharts.makeChart(id, o);
                  $scope.amChartData.charts[id].mangoApiOptions = {
                 	id: id,
-                	xid: attrs.xid,
+                	xid: chartXid,
                 	from: new Date(new Date().getTime() - 1000 * 60 * 60 * 8),
                     to: new Date(),
                     rollup: 'AVERAGE',
@@ -247,7 +258,7 @@ function mangoAmSerial() {
                     useRendered: false,
                     unitConversion: true
                  };
-                 $scope[attrs.apiOptions] = $scope.amChartData.charts[id].mangoApiOptions;
+                 $scope.apiOptions = $scope.amChartData.charts[id].mangoApiOptions;
                  
                  //Go Get the Data to start up
                  $scope.loadSerialChartData($scope.amChartData.charts[id].mangoApiOptions);

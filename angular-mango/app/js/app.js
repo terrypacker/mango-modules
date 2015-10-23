@@ -43,7 +43,11 @@ mangoApp.config([ '$routeProvider', '$httpProvider', function($routeProvider, $h
         	  templateUrl: 'partials/explorer.html',
         	  controller: 'ExplorerCtrl'
         }).
-        when('/logs', {
+      	when('/tree', {
+      	  templateUrl: 'partials/tree.html',
+      	  controller: 'TreeCtrl'
+      	}).
+      	when('/logs', {
           templateUrl: 'partials/log-list.html',
           controller: 'MangoLogListCtrl'
         }).
