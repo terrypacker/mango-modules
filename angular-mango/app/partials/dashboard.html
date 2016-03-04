@@ -1,13 +1,14 @@
 <!-- See config file to override chart settings -->
 <script type="text/javascript" src="js/chart-configs.js"></script>
-
-<div class="col-sm-3">
-  <mango-date-rollup-picker id="picker1" chart-id="serial1" api-options="serial1Options"></mango-date-rollup-picker>
-</div>
-<div class="col-sm-9">
-  <div class="row">
-    <div class="col-sm-6"><am-gauge id="myFirstChart" xid='voltage' title='Voltage' title-size="20"></am-gauge></div>
-    <div class="col-sm-6"><am-gauge id="myFirstSecondChart" xid='temperature' title='Temperature'></am-gauge></div>
+<div class="col-sm-12">
+  <div class="col-sm-4">
+    <mango-date-rollup-picker id="picker1" chart-id="serial1" api-options="serial1Options"></mango-date-rollup-picker>
+  </div>  
+  <div class="col-sm-8">
+    <div class="row">
+      <div class="col-sm-6"><am-gauge id="myFirstChart" xid='voltage' title='Voltage' title-size="20"></am-gauge></div>
+      <div class="col-sm-6"><am-gauge id="myFirstSecondChart" xid='temperature' title='Temperature'></am-gauge></div>
+    </div>
+    <am-serial id="serial1" xid="voltage" api-options="serial1Options" title='Voltage' title-size="20"></am-serial>
   </div>
-  <am-serial id="serial1" xid="voltage" api-options="serial1Options" title='Voltage' title-size="20"></am-serial>
 </div>

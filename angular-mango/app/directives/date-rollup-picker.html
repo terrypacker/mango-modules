@@ -1,35 +1,50 @@
-<div>
-<h3>HTML 5 Inputs</h3><br>
-<div>
-    <div class="form-group">
-        <label for="{{dateRollupPickerId}}-from-html5">From</label>
-        <input id="{{dateRollupPickerId}}-from-html5" class="form-control" type="datetime-local" data-ng-model="apiOptions.from" ng-change="loadChartData('{{dateRollupPickerId}}')"></input>
+<div class="col-sm-12">
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="well">
+        <span style="text-align:center"><h4>{{apiOptions.from | date:'yyyy-MM-dd HH:mm:ss'}}</h4></span>
+        <datetimepicker data-ng-model="apiOptions.from" data-on-set-time="loadChartData(dateRollupPickerId)"></datetimepicker> 
+      </div>  
     </div>
-    <div class="form-group">
-        <label for="to-html5">To</label>
-        <input id="to-html5" class="form-control" type="datetime-local" data-ng-model="apiOptions.to" ng-change="loadChartData('{{dateRollupPickerId}}')"></input>
+  </div>  
+  <div class="row"> 
+    <div class="col-sm-12">
+     <div class="well">
+      <span style="text-align:center"><h4>{{apiOptions.to | date:'yyyy-MM-dd HH:mm:ss'}}</h4></span>
+      <datetimepicker data-ng-model="apiOptions.to" data-on-set-time="loadChartData(dateRollupPickerId)"></datetimepicker> 
+     </div>
     </div>
-    <div class="form-group">
-        <label for="rollup-html5">Rollup</label>
-        <select id="rollup-html5" class="form-control" data-ng-model="apiOptions.rollup" ng-change="loadChartData('{{dateRollupPickerId}}')">
-            <option value="NONE">None</option>
-            <option value="AVERAGE">Average</option>
-            <option value="ACCUMULATOR">Accumulator</option>
-            <option value="COUNT">Count</option>
-            <option value="DELTA">Delta</option>
-            <option value="Integral">Integral</option>
-            <option value="MAXIMUM">Maximum</option>
-            <option Value="MINIMUM">Minimum</option>
-            <option value="SUM">Sum</option>
-            <option value="FIRST">First</option>
-            <option value="LAST">Last</option>
-        </select>
-    </div>
+  </div>
+  <div class="row">
     <div class="form-inline">
+     <div class="row">
+     <div class="col-sm-6">
+        <div class="form-group">
+          <label for="rollup-html5">Rollup</label>
+          <select id="rollup-html5" class="form-control" data-ng-model="apiOptions.rollup" ng-change="loadChartData('{{dateRollupPickerId}}')">
+              <option value="NONE">None</option>
+              <option value="AVERAGE">Average</option>
+              <option value="ACCUMULATOR">Accumulator</option>
+              <option value="COUNT">Count</option>
+              <option value="DELTA">Delta</option>
+              <option value="Integral">Integral</option>
+              <option value="MAXIMUM">Maximum</option>
+              <option Value="MINIMUM">Minimum</option>
+              <option value="SUM">Sum</option>
+              <option value="FIRST">First</option>
+              <option value="LAST">Last</option>
+          </select>
+        </div>
+      </div>
+      <div class="col-sm-6">
         <div class="form-group">
             <label for="periods-html5">Periods</label>
-            <input id="periods-html5" type="number" class="form-control" data-ng-model="apiOptions.timePeriods" ng-change="loadChartData('{{dateRollupPickerId}}')"></input>
+            <input id="periods-html5" type="number" class="form-control" style="width:100px;" data-ng-model="apiOptions.timePeriods" ng-change="loadChartData('{{dateRollupPickerId}}')"></input>
         </div>
+     </div>
+     </div>
+     <div class="row">
+       <div class="col-sm-6">
         <div class="form-group">
             <label for="periodType-html5">Type</label>
             <select id="periodType-html5" class="form-control" data-ng-model="apiOptions.timePeriodType" ng-change="loadChartData('{{dateRollupPickerId}}')">
@@ -42,12 +57,17 @@
                 <option Value="YEARS">Years</option>
             </select>
         </div>
+      </div>
+      <div class="col-sm-6">
+        <div class="form-group">
+          <label>
+            <input id="unit-convert-html5" type="checkbox" data-ng-model="apiOptions.unitConversion" ng-change="loadChartData('{{dateRollupPickerId}}')"></input>
+            Convert To Displayed Unit
+          </label>
+        </div>
+      </div>
+     </div>   
     </div>
-     <div class="checkbox">
-        <label>
-        <input id="unit-convert-html5" type="checkbox" data-ng-model="apiOptions.unitConversion" ng-change="loadChartData('{{dateRollupPickerId}}')"></input>
-        Convert To Displayed Unit
-        </label>
-    </div>
-</div>
+  </div>
+
 </div>

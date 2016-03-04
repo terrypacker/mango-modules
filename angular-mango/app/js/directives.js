@@ -136,8 +136,8 @@ function mangoAmGaugeController($scope, AmChartData, PointValueEvents) {
             function(error){
                 console.log('wse: ' + error);
             },
-            function(open){
-                console.log('wso: ' + open);
+            function(){
+                console.log('web socket open');
             },
             function(close){
                 console.log('wsc: ' + close);

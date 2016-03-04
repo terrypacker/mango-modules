@@ -8,7 +8,8 @@ var mangoApp = angular.module('mangoApp', [
     'mangoFilters',
     'mangoServices',
     'mangoDirectives',
-    'ui.bootstrap'
+    'ui.bootstrap',
+    'ui.bootstrap.datetimepicker'
 ]);
 
 mangoApp.config([ '$routeProvider', '$httpProvider', function($routeProvider, $httpProvider) {
