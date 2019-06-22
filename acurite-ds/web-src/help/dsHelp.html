@@ -1,0 +1,27 @@
+<!--
+    Copyright (C) 2019
+    @author Terry Packer
+-->
+<div class="ma-help-doc-container">
+  <h1 ma-tr="acurite.description"></h1>
+<p>
+The Acurite data source records data from Acurite weather stations. There are many variants of the AcuRite weather stations and sensors.  
+This data source will likely work with the consoles that have a USB interface such as models 01025, 01035, 02032C, and 02064C.
+</p>
+
+<p>After connecting the console to Mango via USB the data source will automatically detect it and read information for any points you have configured.  
+	The internals of the console only update periodically so high poll rates will not result it better data reads. The update rates are as follows:
+</p>
+
+<ul>
+  <li>wind speed: 18s</li>
+  <li>wind direction: 36s</li>
+  <li>outdoor temperature: 36s</li>
+  <li>outdoor humidity: 36s</li>
+  <li>rain: 36s</li>
+  <li>indoor temperature: 60s</li>
+  <li>pressure: 60s</li>
+</ul>
+
+<p><b>Note:</b>The console does not respond to USB requests when in mode 1 or mode 2.</p>
+</div>

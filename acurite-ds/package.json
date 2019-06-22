@@ -1,0 +1,31 @@
+{
+  "private": true,
+  "name": "@infinite-automation/acurite",
+  "version": "3.6.0-SNAPSHOT",
+  "description": "Collect data from the Acurite 5-1 Station",
+  "main": "web/angular/acurite.js",
+  "dependencies": {},
+  "devDependencies": {
+    "@infinite-automation/mango-client": "^0.6.0",
+    "@infinite-automation/mango-module-tools": "~1.2.0",
+    "chai": "^4.2.0",
+    "jsmodbus": "^3.1.3",
+    "mocha": "^5.2.0",
+    "tmp": "^0.0.33"
+  },
+  "scripts": {
+    "webpack": "webpack --config webpack.config.js"
+  },
+  "author": "Terry Packer <terry@infiniteautomation.com>",
+  "license": "UNLICENSED",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/terrypacker/mango-moduels.git"
+  },
+  "com_terrypacker": {
+    "moduleName": "acurite"
+  },
+  "com_infiniteautomation": {
+    "moduleName": "acurite"
+  }
+}
