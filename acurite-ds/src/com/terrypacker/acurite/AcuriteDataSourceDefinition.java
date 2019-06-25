@@ -4,6 +4,8 @@
 package com.terrypacker.acurite;
 
 import com.serotonin.m2m2.module.DataSourceDefinition;
+import com.serotonin.m2m2.module.ModuleRegistry;
+import com.serotonin.m2m2.module.license.DataSourceTypePointsLimit;
 import com.serotonin.m2m2.vo.dataSource.DataSourceVO;
 
 /**
@@ -13,6 +15,11 @@ import com.serotonin.m2m2.vo.dataSource.DataSourceVO;
 public class AcuriteDataSourceDefinition extends DataSourceDefinition {
     
     public static final String TYPE_NAME = "ACURITE";
+    
+    @Override
+    public void preInitialize(boolean install, boolean upgrade) { 
+        ModuleRegistry.addLicenseEnforcement(new DataSourceTypePointsLimit(getModule().getName(), TYPE_NAME, 2, null));
+    }
     
     @Override
     public String getDataSourceTypeName() {

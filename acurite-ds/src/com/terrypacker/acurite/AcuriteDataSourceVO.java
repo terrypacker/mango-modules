@@ -9,7 +9,9 @@ import java.io.ObjectOutputStream;
 import java.util.List;
 
 import com.serotonin.m2m2.Common;
+import com.serotonin.m2m2.i18n.ProcessResult;
 import com.serotonin.m2m2.i18n.TranslatableMessage;
+import com.serotonin.m2m2.module.license.DataSourceTypePointsLimit;
 import com.serotonin.m2m2.rt.dataSource.DataSourceRT;
 import com.serotonin.m2m2.util.ExportCodes;
 import com.serotonin.m2m2.vo.dataSource.DataSourceVO;
@@ -72,6 +74,11 @@ public class AcuriteDataSourceVO extends PollingDataSourceVO<AcuriteDataSourceVO
         return EVENT_CODES;
     }
 
+    @Override
+    public void validate(ProcessResult response) {
+        super.validate(response);
+        DataSourceTypePointsLimit.checkLimit(AcuriteDataSourceDefinition.TYPE_NAME, response);
+    }
     /*
      * Serialization 
      */

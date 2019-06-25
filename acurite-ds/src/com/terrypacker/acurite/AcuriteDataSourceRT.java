@@ -29,6 +29,9 @@ import com.serotonin.m2m2.rt.dataSource.PollingDataSource;
 
 
 /**
+ * 
+ * Majority of the protocol lifted from this code: https://github.com/weewx/weewx/blob/master/bin/weewx/drivers/acurite.py
+ * 
  * @author Terry Packer
  *
  */
@@ -44,6 +47,7 @@ public class AcuriteDataSourceRT extends PollingDataSource<AcuriteDataSourceVO> 
     public static final int INVALID_RESPONSE_EVENT = 6; //Corrupt or unknown response
     public static final int LOW_BATTERY_EVENT = 7;
     public static final int LOW_SIGNAL_EVENT = 8; //Signal too low to connect to remote sensors
+    public static final int LICENSE_RESTRICTION_EVENT = 9; //Too many points created
     
     //Acurite Station USB id
     private final static short VENDOR = 9408;
