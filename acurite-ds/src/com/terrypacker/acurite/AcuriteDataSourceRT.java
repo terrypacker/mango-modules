@@ -6,6 +6,7 @@ package com.terrypacker.acurite;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.usb.UsbConfiguration;
 import javax.usb.UsbConst;
 import javax.usb.UsbControlIrp;
 import javax.usb.UsbDevice;
@@ -14,6 +15,9 @@ import javax.usb.UsbDisconnectedException;
 import javax.usb.UsbException;
 import javax.usb.UsbHostManager;
 import javax.usb.UsbHub;
+import javax.usb.UsbInterface;
+import javax.usb.UsbInterfacePolicy;
+import javax.usb.UsbNotActiveException;
 import javax.usb.UsbServices;
 
 import org.apache.commons.logging.Log;
@@ -50,8 +54,8 @@ public class AcuriteDataSourceRT extends PollingDataSource<AcuriteDataSourceVO> 
     public static final int LICENSE_RESTRICTION_EVENT = 9; //Too many points created
     
     //Acurite Station USB id
-    private final static short VENDOR = 9408;
-    private final static short PRODUCT = 3;
+    public final static short VENDOR = 9408; //0x24c0
+    public final static short PRODUCT = 3;
 
     //Request Info
     private static final short VALUE = 0x0100;
@@ -66,8 +70,11 @@ public class AcuriteDataSourceRT extends PollingDataSource<AcuriteDataSourceVO> 
     //Device used during runtime
     private UsbDevice device;
     
+    private final String os;
+    
     public AcuriteDataSourceRT(AcuriteDataSourceVO vo) {
         super(vo);
+        this.os = System.getProperty("os.name").toLowerCase();
     }
 
     @Override
@@ -186,6 +193,26 @@ public class AcuriteDataSourceRT extends PollingDataSource<AcuriteDataSourceVO> 
         //No-op, can't set anything
     }
     
+    @Override
+    public void terminate() {
+        super.terminate();
+        try {
+            if(device != null) {
+                UsbConfiguration configuration = device.getActiveUsbConfiguration();
+                UsbInterface iface = configuration.getUsbInterface(device.getActiveUsbConfigurationNumber());
+                iface.release();
+            }
+        }catch(Exception e) {
+            LOG.error("Termination of Accurite Data Source failed", e);
+        }
+    }
+    
+    /**
+     * Request data from the device
+     * @param request
+     * @return
+     * @throws TranslatableException
+     */
     private byte[] requestData(short request) throws TranslatableException {
         byte[] data = new byte[50];
         UsbControlIrp irp = device.createUsbControlIrp((byte) (UsbConst.REQUESTTYPE_TYPE_CLASS
@@ -220,9 +247,28 @@ public class AcuriteDataSourceRT extends PollingDataSource<AcuriteDataSourceVO> 
      * @return
      * @throws DeviceNotFoundException
      */
-    private UsbDevice findDevice(UsbHub hub, short vendorId, short productId) throws DeviceNotFoundException{
+    private UsbDevice findDevice(UsbHub hub, short vendorId, short productId) throws DeviceNotFoundException {
         UsbDevice found = findDeviceRecursively(hub, vendorId, productId);
         if(found != null) {
+            if (os.contains("nix") || os.contains("aix") || os.contains("nux")){
+                //Claim device for our use if on linux
+                UsbConfiguration configuration = found.getActiveUsbConfiguration();
+                UsbInterface iface = configuration.getUsbInterface((byte)0);
+                try {
+                    if(iface != null) {
+                        iface.claim(new UsbInterfacePolicy()
+                        {            
+                            @Override
+                            public boolean forceClaim(UsbInterface usbInterface)
+                            {
+                                return true;
+                            }
+                        });
+                    }
+                } catch (UsbNotActiveException | UsbDisconnectedException | UsbException e) {
+                    throw new DeviceNotFoundException(e);
+                }
+            }
             returnToNormal(USB_DEVICE_NOT_FOUND_EVENT, Common.timer.currentTimeMillis());
             return found;
         }
@@ -230,7 +276,7 @@ public class AcuriteDataSourceRT extends PollingDataSource<AcuriteDataSourceVO> 
     }
     
     @SuppressWarnings("unchecked")
-    private UsbDevice findDeviceRecursively(UsbHub hub, short vendorId, short productId) {
+    public static UsbDevice findDeviceRecursively(UsbHub hub, short vendorId, short productId) {
         for (UsbDevice device : (List<UsbDevice>) hub.getAttachedUsbDevices()) {
             UsbDeviceDescriptor desc = device.getUsbDeviceDescriptor();
             if (desc.idVendor() == vendorId && desc.idProduct() == productId) {
@@ -532,6 +578,9 @@ public class AcuriteDataSourceRT extends PollingDataSource<AcuriteDataSourceVO> 
         private static final long serialVersionUID = 1L;
         public DeviceNotFoundException(){
             super(new TranslatableMessage("acurite.event.deviceNotFound"));
+        }
+        public DeviceNotFoundException(Throwable e){
+            super(new TranslatableMessage("acurite.event.deviceNotFoundMessage", e.getMessage()));
         }
     }
     

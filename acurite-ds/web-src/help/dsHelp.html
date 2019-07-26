@@ -24,4 +24,18 @@ This data source will likely work with the consoles that have a USB interface su
 </ul>
 
 <p><b>Note:</b>The console does not respond to USB requests when in mode 1 or mode 2.</p>
+<h3>Linux configuration</h3>
+<p>
+Usb devices on linux must be configured with the appropriate permissions.  One way to do this is via /etc/rules.d by creating a rules script 
+that will assign the proper privleges and groups to the device.  In a rules file place the following contents:
+</p>
+<pre>
+#SUBSYSTEMS=="usb",ATTR{idVendor}=="24c0",ATTR{idProduct}=="0003",GROUP="dialout",MODE="0660"
+</pre>
+Then execute the following and when done unplug and re-plug in the USB device
+<pre>
+sudo udevadm control --reload-rules
+sudo udevadm trigger
+</pre>
+
 </div>
