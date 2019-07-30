@@ -52,6 +52,8 @@ public class AcuritePointLocatorVO extends AbstractPointLocatorVO<AcuritePointLo
 
     @Override
     public void validate(ProcessResult response, DataPointVO dpvo, DataSourceVO<?> dsvo) {
+        if (!(dsvo instanceof AcuriteDataSourceVO))
+            response.addContextualMessage("dataSourceId", "dpEdit.validate.invalidDataSourceType");
         if(measurement == null)
             response.addContextualMessage("measurement", "validate.required");
     }
